@@ -13,43 +13,53 @@ export default function Scene() {
   useEffect(() => {
     const container = ref.current;
 
+    // --- Scene / Camera / Renderer ---
     const scene = new THREE.Scene();
-
     const camera = new THREE.PerspectiveCamera(
       55,
       window.innerWidth / window.innerHeight,
       0.1,
-      120
+      140
     );
-    camera.position.set(0, 0, 6.2);
+    camera.position.set(0, 0, 6.6);
 
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(2, window.devicePixelRatio));
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.05;
     container.appendChild(renderer.domElement);
 
-    // Environment for nicer reflections (cinematic feel)
+    // --- Environment (soft studio reflections) ---
     const pmrem = new THREE.PMREMGenerator(renderer);
-    const envTex = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
-    scene.environment = envTex;
+    scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
 
-    // Lights (key / fill / rim)
+    // --- Lights (cinematic) ---
     const key = new THREE.DirectionalLight(0xffffff, 1.7);
-    key.position.set(4.5, 3.2, 6);
+    key.position.set(5.5, 3.5, 6.5);
     scene.add(key);
 
-    const fill = new THREE.DirectionalLight(0xffffff, 0.7);
-    fill.position.set(-3.5, 1.4, 4);
+    const fill = new THREE.DirectionalLight(0xffffff, 0.55);
+    fill.position.set(-4.2, 1.0, 5.5);
     scene.add(fill);
 
-    const rim = new THREE.DirectionalLight(0xffffff, 1.25);
-    rim.position.set(-6, 1.6, -3.5);
+    const rim = new THREE.DirectionalLight(0xffffff, 1.15);
+    rim.position.set(-6.5, 1.8, -4.5);
     scene.add(rim);
 
-    scene.add(new THREE.AmbientLight(0xffffff, 0.45));
+    scene.add(new THREE.AmbientLight(0xffffff, 0.35));
 
-    // Particles (light dust)
-    const makeDust = (count = 1100) => {
+    // --- Groups ---
+    const hero = new THREE.Group();
+    const cluster = new THREE.Group();
+    cluster.visible = false;
+
+    scene.add(hero);
+    scene.add(cluster);
+
+    // --- Dust Particles (subtle premium) ---
+    const makeDust = (count = 900) => {
       const g = new THREE.BufferGeometry();
       const p = new Float32Array(count * 3);
       for (let i = 0; i < count; i++) {
@@ -61,157 +71,233 @@ export default function Scene() {
       g.setAttribute("position", new THREE.BufferAttribute(p, 3));
       const m = new THREE.PointsMaterial({
         color: new THREE.Color("#d7d2c6"),
-        size: 0.018,
+        size: 0.016,
         transparent: true,
-        opacity: 0.5,
-        depthWrite: false,
+        opacity: 0.45,
+        depthWrite: false
       });
-      return new THREE.Points(g, m);
+      const pts = new THREE.Points(g, m);
+      return pts;
     };
-
     const dust = makeDust();
     scene.add(dust);
-    gsap.to(dust.rotation, { y: "+=0.9", duration: 14, repeat: -1, ease: "none" });
 
-    // Groups
-    const heroGroup = new THREE.Group();
-    const clusterGroup = new THREE.Group();
-    clusterGroup.visible = false;
-
-    scene.add(heroGroup);
-    scene.add(clusterGroup);
-
-    // Helper: normalize model scale + center
-    const normalizeObject = (obj, targetSize = 2.2) => {
+    // --- Helpers ---
+    const normalizeObject = (obj, targetSize = 2.3) => {
       const box = new THREE.Box3().setFromObject(obj);
       const size = new THREE.Vector3();
       box.getSize(size);
       const maxAxis = Math.max(size.x, size.y, size.z) || 1;
       const scale = targetSize / maxAxis;
-
       obj.scale.setScalar(scale);
 
-      // re-center after scaling
       const box2 = new THREE.Box3().setFromObject(obj);
       const center = new THREE.Vector3();
       box2.getCenter(center);
       obj.position.sub(center);
     };
 
-    // Helper: apply "Green Coffee" material tuning (keeps textures if exist)
     const applyGreenBeanLook = (root) => {
-      const greenTint = new THREE.Color("#8fa66a"); // green coffee vibe
+      // "Green coffee" tint (عدله إذا تبي أخضر أكثر/أقل)
+      const greenTint = new THREE.Color("#95ad72");
+
       root.traverse((o) => {
         if (!o.isMesh) return;
 
-        // Make sure materials are not shared unintentionally
-        const mat = Array.isArray(o.material)
-          ? o.material.map((m) => (m ? m.clone() : m))
-          : o.material?.clone();
+        // Clone materials to avoid sharing artifacts
+        const mats = Array.isArray(o.material) ? o.material : [o.material];
+        const newMats = mats.map((m) => {
+          if (!m) return m;
 
-        if (!mat) return;
+          // Keep maps if exist, convert to Standard/Physical feel
+          const nm = new THREE.MeshStandardMaterial({
+            map: m.map || null,
+            normalMap: m.normalMap || null,
+            roughnessMap: m.roughnessMap || null,
+            metalnessMap: m.metalnessMap || null,
+            aoMap: m.aoMap || null,
+            color: (m.color ? m.color.clone() : new THREE.Color("#c7c7c7")).multiply(greenTint),
+            roughness: 0.72,
+            metalness: 0.02,
+            transparent: m.transparent || false,
+            opacity: typeof m.opacity === "number" ? m.opacity : 1
+          });
 
-        const tune = (m) => {
-          // Keep map if it exists, but tint towards green
-          if (m.color) m.color.multiply(greenTint);
+          // If model had emissive/specular, ignore for natural raw look
+          nm.envMapIntensity = 0.85;
 
-          // More "raw bean" surface
-          if ("roughness" in m) m.roughness = 0.65;
-          if ("metalness" in m) m.metalness = 0.02;
+          // If it looks too flat, reduce roughness a bit:
+          // nm.roughness = 0.62;
 
-          // If it is Physical, add subtle clearcoat for premium sheen
-          if ("clearcoat" in m) {
-            m.clearcoat = 0.12;
-            m.clearcoatRoughness = 0.55;
-          }
+          return nm;
+        });
 
-          // Reduce overly dark look
-          if ("envMapIntensity" in m) m.envMapIntensity = 0.85;
-          m.needsUpdate = true;
-          return m;
-        };
-
-        o.material = Array.isArray(mat) ? mat.map(tune) : tune(mat);
+        o.material = Array.isArray(o.material) ? newMats : newMats[0];
       });
     };
 
-    // Load GLB
-    const loader = new GLTFLoader();
+    // Smooth look-at target (avoid snapping)
+    const lookTarget = new THREE.Vector3(0, 0, 0);
+    const lookCurrent = new THREE.Vector3(0, 0, 0);
 
-    let heroBean = null;
+    // --- Cinematic States (لكل Section) ---
+    // idx: 0 Hero, 1 Story, 2 Quality, 3 Services, 4 Investors, 5 Contact
+    const STATES = [
+      {
+        camPos: new THREE.Vector3(0.0, 0.05, 6.6),
+        lookAt: new THREE.Vector3(0.0, 0.0, 0.0),
+        heroPos: new THREE.Vector3(0.0, 0.0, 0.0),
+        heroRot: new THREE.Euler(0.15, 0.0, 0.0),
+        heroScale: 1.0,
+        showCluster: false,
+        exposure: 1.08
+      },
+      {
+        camPos: new THREE.Vector3(0.9, 0.45, 5.9),
+        lookAt: new THREE.Vector3(0.0, 0.05, 0.0),
+        heroPos: new THREE.Vector3(-0.25, -0.05, 0.0),
+        heroRot: new THREE.Euler(0.35, 1.2, 0.0),
+        heroScale: 1.02,
+        showCluster: false,
+        exposure: 1.05
+      },
+      {
+        camPos: new THREE.Vector3(-1.15, 0.75, 5.7),
+        lookAt: new THREE.Vector3(0.15, 0.0, 0.0),
+        heroPos: new THREE.Vector3(0.95, -0.12, 0.0),
+        heroRot: new THREE.Euler(0.95, 2.6, 0.15),
+        heroScale: 1.0,
+        showCluster: true,
+        exposure: 1.03
+      },
+      {
+        camPos: new THREE.Vector3(0.25, 0.25, 6.35),
+        lookAt: new THREE.Vector3(0.0, 0.0, 0.0),
+        heroPos: new THREE.Vector3(0.35, -0.08, 0.0),
+        heroRot: new THREE.Euler(0.55, 3.6, 0.0),
+        heroScale: 0.98,
+        showCluster: false,
+        exposure: 1.06
+      },
+      {
+        camPos: new THREE.Vector3(0.0, 0.15, 6.75),
+        lookAt: new THREE.Vector3(0.0, 0.0, 0.0),
+        heroPos: new THREE.Vector3(0.0, -0.05, 0.0),
+        heroRot: new THREE.Euler(0.25, 4.5, 0.0),
+        heroScale: 1.0,
+        showCluster: false,
+        exposure: 1.08
+      },
+      {
+        camPos: new THREE.Vector3(0.0, 0.05, 7.05),
+        lookAt: new THREE.Vector3(0.0, 0.0, 0.0),
+        heroPos: new THREE.Vector3(0.0, 0.0, 0.0),
+        heroRot: new THREE.Euler(0.15, 5.1, 0.0),
+        heroScale: 1.0,
+        showCluster: false,
+        exposure: 1.1
+      }
+    ];
+
+    // GSAP "goToState" (احترافي: ease + مدة ثابتة + بدون تشويش)
+    let activeTween = null;
+    const goToState = (idx) => {
+      const s = STATES[Math.max(0, Math.min(STATES.length - 1, idx))];
+
+      // Toggle cluster cleanly (fade-like)
+      if (s.showCluster) {
+        cluster.visible = true;
+        gsap.to(cluster, { duration: 0.8, ease: "power2.out", onUpdate: () => {} });
+      } else {
+        // hide after small delay for smoothness
+        gsap.delayedCall(0.2, () => (cluster.visible = false));
+      }
+
+      // Kill previous to avoid fighting
+      if (activeTween) activeTween.kill();
+
+      activeTween = gsap.timeline({ defaults: { duration: 1.15, ease: "power3.inOut" } });
+
+      activeTween.to(camera.position, { x: s.camPos.x, y: s.camPos.y, z: s.camPos.z }, 0);
+      activeTween.to(hero.position, { x: s.heroPos.x, y: s.heroPos.y, z: s.heroPos.z }, 0);
+      activeTween.to(hero.rotation, { x: s.heroRot.x, y: s.heroRot.y, z: s.heroRot.z }, 0);
+      activeTween.to(hero.scale, { x: s.heroScale, y: s.heroScale, z: s.heroScale }, 0);
+      activeTween.to(renderer, { toneMappingExposure: s.exposure }, 0);
+
+      // Smooth lookAt target (interpolated in render loop)
+      gsap.to(lookTarget, { duration: 1.15, ease: "power3.inOut", x: s.lookAt.x, y: s.lookAt.y, z: s.lookAt.z });
+    };
+
+    // --- Mouse parallax (very subtle, premium) ---
+    const mouse = { x: 0, y: 0 };
+    const onMouseMove = (e) => {
+      const nx = (e.clientX / window.innerWidth) * 2 - 1;
+      const ny = (e.clientY / window.innerHeight) * 2 - 1;
+      mouse.x = nx;
+      mouse.y = ny;
+    };
+    window.addEventListener("mousemove", onMouseMove, { passive: true });
+    window.addEventListener("touchmove", (e) => {
+      if (!e.touches?.[0]) return;
+      const t = e.touches[0];
+      const nx = (t.clientX / window.innerWidth) * 2 - 1;
+      const ny = (t.clientY / window.innerHeight) * 2 - 1;
+      mouse.x = nx;
+      mouse.y = ny;
+    }, { passive: true });
+
+    // --- Load model ---
+    const loader = new GLTFLoader();
+    let heroModel = null;
 
     loader.load(
       "/assets/models/bean.glb",
       (gltf) => {
-        // Hero
-        heroBean = gltf.scene;
-        normalizeObject(heroBean, 2.35);
-        applyGreenBeanLook(heroBean);
+        heroModel = gltf.scene;
+        normalizeObject(heroModel, 2.35);
+        applyGreenBeanLook(heroModel);
+        hero.add(heroModel);
 
-        heroGroup.add(heroBean);
-
-        // Secondary beans (clones)
-        for (let i = 0; i < 10; i++) {
-          const c = heroBean.clone(true);
-          // Re-apply material clones/tint to avoid shared material weirdness
+        // Create cluster (secondary beans) by cloning (small count; safe for web)
+        for (let i = 0; i < 12; i++) {
+          const c = heroModel.clone(true);
           applyGreenBeanLook(c);
 
-          const angle = (i / 10) * Math.PI * 2;
-          c.position.set(Math.cos(angle) * 2.3, (Math.random() - 0.5) * 0.9, Math.sin(angle) * 1.4);
-          c.rotation.set(Math.random() * 1.2, Math.random() * 6.2, Math.random() * 1.2);
-          c.scale.multiplyScalar(0.35 + Math.random() * 0.08);
-          clusterGroup.add(c);
+          const a = (i / 12) * Math.PI * 2;
+          const r = 2.35;
+          c.position.set(Math.cos(a) * r, (Math.random() - 0.5) * 0.9, Math.sin(a) * (r * 0.65));
+          c.rotation.set(Math.random() * 1.1, Math.random() * 6.2, Math.random() * 1.1);
+          const s = 0.26 + Math.random() * 0.08;
+          c.scale.multiplyScalar(s);
+          cluster.add(c);
         }
 
-        // Base motion (always)
-        gsap.to(heroGroup.position, { y: 0.12, duration: 2.8, yoyo: true, repeat: -1, ease: "sine.inOut" });
-        gsap.to(heroGroup.rotation, { y: "+=6.283", duration: 20, repeat: -1, ease: "none" });
+        // Initial state (Hero)
+        goToState(0);
 
-        // Scroll choreography
-        const tl = gsap.timeline({
-          scrollTrigger: { start: "top top", end: "bottom bottom", scrub: 1 },
-        });
-
-        // Hero
-        tl.to(camera.position, { z: 4.5, ease: "none" }, 0.0);
-        tl.to(heroGroup.rotation, { x: 0.55, ease: "none" }, 0.15);
-
-        // Story (move camera a bit)
-        tl.to(camera.position, { x: 0.9, y: 0.35, z: 5.2, ease: "none" }, 0.9);
-
-        // Quality (show cluster)
-        tl.to(heroGroup.position, { x: 1.2, y: -0.08, ease: "none" }, 1.8);
-        tl.to(heroGroup.rotation, { y: "+=2.6", x: 1.05, ease: "none" }, 1.8);
-
-        // Services / Investors (calm out)
-        tl.to(camera.position, { x: 0.2, y: 0.2, z: 6.1, ease: "none" }, 2.7);
-        tl.to(camera.position, { x: 0, y: 0, z: 6.6, ease: "none" }, 3.4);
-
-        // Toggle cluster visibility based on sections
+        // Section triggers (clean Apple-style scene switching)
         const sections = Array.from(document.querySelectorAll("section"));
-        const setState = (idx) => {
-          // 0 Hero, 1 Story, 2 Quality, 3 Services, 4 Investors, 5 Contact
-          clusterGroup.visible = idx === 2;
-        };
-
         sections.forEach((sec, idx) => {
           ScrollTrigger.create({
             trigger: sec,
-            start: "top 60%",
-            end: "bottom 40%",
-            onEnter: () => setState(idx),
-            onEnterBack: () => setState(idx),
+            start: "top 55%",
+            end: "bottom 45%",
+            onEnter: () => goToState(idx),
+            onEnterBack: () => goToState(idx)
           });
         });
+
+        // Optional: snap to sections (feel premium). Uncomment إذا تبيه:
+        // ScrollTrigger.normalizeScroll(true);
+        // ScrollTrigger.config({ ignoreMobileResize: true });
       },
       undefined,
       () => {
-        // لو فشل التحميل، لا نكسر الموقع
+        // fail silently
       }
     );
 
-    const clock = new THREE.Clock();
-
+    // --- Resize ---
     const onResize = () => {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
@@ -219,15 +305,36 @@ export default function Scene() {
     };
     window.addEventListener("resize", onResize);
 
+    // --- Render loop ---
+    const clock = new THREE.Clock();
     let raf = 0;
+
     const animate = () => {
       raf = requestAnimationFrame(animate);
-
-      // subtle orbit for cluster
       const t = clock.getElapsedTime();
-      if (clusterGroup.visible) {
-        clusterGroup.rotation.y = t * 0.35;
+
+      // Subtle premium drift (continuous, not fighting the state)
+      hero.rotation.y += 0.0025; // slow rotation always
+      hero.position.y += Math.sin(t * 1.2) * 0.0006;
+
+      // Cluster orbit (only when visible)
+      if (cluster.visible) {
+        cluster.rotation.y = t * 0.35;
+        cluster.rotation.x = Math.sin(t * 0.35) * 0.06;
       }
+
+      // Dust drift
+      dust.rotation.y += 0.0009;
+
+      // Mouse parallax (tiny)
+      const parX = mouse.x * 0.12;
+      const parY = -mouse.y * 0.08;
+      camera.position.x += (parX - camera.position.x * 0.0) * 0.02; // tiny push
+      camera.position.y += (parY - camera.position.y * 0.0) * 0.02;
+
+      // Smooth lookAt
+      lookCurrent.lerp(lookTarget, 0.08);
+      camera.lookAt(lookCurrent);
 
       renderer.render(scene, camera);
     };
@@ -236,10 +343,15 @@ export default function Scene() {
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener("resize", onResize);
+      window.removeEventListener("mousemove", onMouseMove);
       ScrollTrigger.getAll().forEach((t) => t.kill());
       renderer.dispose();
       pmrem.dispose();
-      if (container?.firstChild) container.removeChild(container.firstChild);
+
+      // remove canvas safely
+      if (renderer.domElement && renderer.domElement.parentNode) {
+        renderer.domElement.parentNode.removeChild(renderer.domElement);
+      }
     };
   }, []);
 
