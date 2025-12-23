@@ -13,67 +13,70 @@ export default function Scene() {
   useEffect(() => {
     const container = ref.current;
 
-    // --- Scene / Camera / Renderer ---
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(
-      55,
-      window.innerWidth / window.innerHeight,
-      0.1,
-      140
-    );
-    camera.position.set(0, 0, 6.6);
-
+    // ---- Renderer (mobile-friendly) ----
     const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(Math.min(2, window.devicePixelRatio));
+
+    // تقليل التقطيع على الجوال: pixelRatio أقل
+    const isMobile = Math.min(window.innerWidth, window.innerHeight) < 768;
+    renderer.setPixelRatio(isMobile ? 1 : Math.min(1.6, window.devicePixelRatio));
+
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.05;
+
     container.appendChild(renderer.domElement);
 
-    // --- Environment (soft studio reflections) ---
+    // ---- Scene / Camera ----
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 140);
+    camera.position.set(0, 0.15, 6.9);
+
+    // Environment (soft reflections)
     const pmrem = new THREE.PMREMGenerator(renderer);
     scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
 
-    // --- Lights (cinematic) ---
-    const key = new THREE.DirectionalLight(0xffffff, 1.7);
-    key.position.set(5.5, 3.5, 6.5);
+    // Lights (stable – no flicker)
+    const key = new THREE.DirectionalLight(0xffffff, 1.55);
+    key.position.set(5.5, 3.2, 6.5);
     scene.add(key);
 
     const fill = new THREE.DirectionalLight(0xffffff, 0.55);
-    fill.position.set(-4.2, 1.0, 5.5);
+    fill.position.set(-4.2, 1.2, 5.5);
     scene.add(fill);
 
-    const rim = new THREE.DirectionalLight(0xffffff, 1.15);
+    const rim = new THREE.DirectionalLight(0xffffff, 1.1);
     rim.position.set(-6.5, 1.8, -4.5);
     scene.add(rim);
 
     scene.add(new THREE.AmbientLight(0xffffff, 0.35));
 
-    // --- Groups ---
-    const hero = new THREE.Group();
-    const cluster = new THREE.Group();
+    // ---- Groups ----
+    const rig = new THREE.Group();      // كل الحركة تكون هنا (مستقرة)
+    const hero = new THREE.Group();     // الحبة الرئيسية
+    const cluster = new THREE.Group();  // حبوب ثانوية (مشهد واحد)
     cluster.visible = false;
 
-    scene.add(hero);
-    scene.add(cluster);
+    rig.add(hero);
+    rig.add(cluster);
+    scene.add(rig);
 
-    // --- Dust Particles (subtle premium) ---
-    const makeDust = (count = 900) => {
+    // ---- Dust (خفيف) ----
+    const makeDust = (count = isMobile ? 420 : 700) => {
       const g = new THREE.BufferGeometry();
       const p = new Float32Array(count * 3);
       for (let i = 0; i < count; i++) {
         const i3 = i * 3;
-        p[i3 + 0] = (Math.random() - 0.5) * 10;
-        p[i3 + 1] = (Math.random() - 0.5) * 6;
-        p[i3 + 2] = (Math.random() - 0.5) * 10;
+        p[i3 + 0] = (Math.random() - 0.5) * 9;
+        p[i3 + 1] = (Math.random() - 0.5) * 5;
+        p[i3 + 2] = (Math.random() - 0.5) * 9;
       }
       g.setAttribute("position", new THREE.BufferAttribute(p, 3));
       const m = new THREE.PointsMaterial({
         color: new THREE.Color("#d7d2c6"),
-        size: 0.016,
+        size: isMobile ? 0.014 : 0.016,
         transparent: true,
-        opacity: 0.45,
+        opacity: 0.40,
         depthWrite: false
       });
       const pts = new THREE.Points(g, m);
@@ -82,14 +85,14 @@ export default function Scene() {
     const dust = makeDust();
     scene.add(dust);
 
-    // --- Helpers ---
-    const normalizeObject = (obj, targetSize = 2.3) => {
+    // ---- Helpers ----
+    const normalizeObject = (obj, targetSize = 2.35) => {
       const box = new THREE.Box3().setFromObject(obj);
       const size = new THREE.Vector3();
       box.getSize(size);
       const maxAxis = Math.max(size.x, size.y, size.z) || 1;
-      const scale = targetSize / maxAxis;
-      obj.scale.setScalar(scale);
+      const s = targetSize / maxAxis;
+      obj.scale.setScalar(s);
 
       const box2 = new THREE.Box3().setFromObject(obj);
       const center = new THREE.Vector3();
@@ -98,155 +101,29 @@ export default function Scene() {
     };
 
     const applyGreenBeanLook = (root) => {
-      // "Green coffee" tint (عدله إذا تبي أخضر أكثر/أقل)
-      const greenTint = new THREE.Color("#95ad72");
-
+      const tint = new THREE.Color("#95ad72"); // بن أخضر
       root.traverse((o) => {
         if (!o.isMesh) return;
-
-        // Clone materials to avoid sharing artifacts
         const mats = Array.isArray(o.material) ? o.material : [o.material];
-        const newMats = mats.map((m) => {
+        const cloned = mats.map((m) => {
           if (!m) return m;
-
-          // Keep maps if exist, convert to Standard/Physical feel
           const nm = new THREE.MeshStandardMaterial({
             map: m.map || null,
             normalMap: m.normalMap || null,
             roughnessMap: m.roughnessMap || null,
-            metalnessMap: m.metalnessMap || null,
             aoMap: m.aoMap || null,
-            color: (m.color ? m.color.clone() : new THREE.Color("#c7c7c7")).multiply(greenTint),
+            color: (m.color ? m.color.clone() : new THREE.Color("#c7c7c7")).multiply(tint),
             roughness: 0.72,
-            metalness: 0.02,
-            transparent: m.transparent || false,
-            opacity: typeof m.opacity === "number" ? m.opacity : 1
+            metalness: 0.02
           });
-
-          // If model had emissive/specular, ignore for natural raw look
           nm.envMapIntensity = 0.85;
-
-          // If it looks too flat, reduce roughness a bit:
-          // nm.roughness = 0.62;
-
           return nm;
         });
-
-        o.material = Array.isArray(o.material) ? newMats : newMats[0];
+        o.material = Array.isArray(o.material) ? cloned : cloned[0];
       });
     };
 
-    // Smooth look-at target (avoid snapping)
-    const lookTarget = new THREE.Vector3(0, 0, 0);
-    const lookCurrent = new THREE.Vector3(0, 0, 0);
-
-    // --- Cinematic States (لكل Section) ---
-    // idx: 0 Hero, 1 Story, 2 Quality, 3 Services, 4 Investors, 5 Contact
-    const STATES = [
-      {
-        camPos: new THREE.Vector3(0.0, 0.05, 6.6),
-        lookAt: new THREE.Vector3(0.0, 0.0, 0.0),
-        heroPos: new THREE.Vector3(0.0, 0.0, 0.0),
-        heroRot: new THREE.Euler(0.15, 0.0, 0.0),
-        heroScale: 1.0,
-        showCluster: false,
-        exposure: 1.08
-      },
-      {
-        camPos: new THREE.Vector3(0.9, 0.45, 5.9),
-        lookAt: new THREE.Vector3(0.0, 0.05, 0.0),
-        heroPos: new THREE.Vector3(-0.25, -0.05, 0.0),
-        heroRot: new THREE.Euler(0.35, 1.2, 0.0),
-        heroScale: 1.02,
-        showCluster: false,
-        exposure: 1.05
-      },
-      {
-        camPos: new THREE.Vector3(-1.15, 0.75, 5.7),
-        lookAt: new THREE.Vector3(0.15, 0.0, 0.0),
-        heroPos: new THREE.Vector3(0.95, -0.12, 0.0),
-        heroRot: new THREE.Euler(0.95, 2.6, 0.15),
-        heroScale: 1.0,
-        showCluster: true,
-        exposure: 1.03
-      },
-      {
-        camPos: new THREE.Vector3(0.25, 0.25, 6.35),
-        lookAt: new THREE.Vector3(0.0, 0.0, 0.0),
-        heroPos: new THREE.Vector3(0.35, -0.08, 0.0),
-        heroRot: new THREE.Euler(0.55, 3.6, 0.0),
-        heroScale: 0.98,
-        showCluster: false,
-        exposure: 1.06
-      },
-      {
-        camPos: new THREE.Vector3(0.0, 0.15, 6.75),
-        lookAt: new THREE.Vector3(0.0, 0.0, 0.0),
-        heroPos: new THREE.Vector3(0.0, -0.05, 0.0),
-        heroRot: new THREE.Euler(0.25, 4.5, 0.0),
-        heroScale: 1.0,
-        showCluster: false,
-        exposure: 1.08
-      },
-      {
-        camPos: new THREE.Vector3(0.0, 0.05, 7.05),
-        lookAt: new THREE.Vector3(0.0, 0.0, 0.0),
-        heroPos: new THREE.Vector3(0.0, 0.0, 0.0),
-        heroRot: new THREE.Euler(0.15, 5.1, 0.0),
-        heroScale: 1.0,
-        showCluster: false,
-        exposure: 1.1
-      }
-    ];
-
-    // GSAP "goToState" (احترافي: ease + مدة ثابتة + بدون تشويش)
-    let activeTween = null;
-    const goToState = (idx) => {
-      const s = STATES[Math.max(0, Math.min(STATES.length - 1, idx))];
-
-      // Toggle cluster cleanly (fade-like)
-      if (s.showCluster) {
-        cluster.visible = true;
-        gsap.to(cluster, { duration: 0.8, ease: "power2.out", onUpdate: () => {} });
-      } else {
-        // hide after small delay for smoothness
-        gsap.delayedCall(0.2, () => (cluster.visible = false));
-      }
-
-      // Kill previous to avoid fighting
-      if (activeTween) activeTween.kill();
-
-      activeTween = gsap.timeline({ defaults: { duration: 1.15, ease: "power3.inOut" } });
-
-      activeTween.to(camera.position, { x: s.camPos.x, y: s.camPos.y, z: s.camPos.z }, 0);
-      activeTween.to(hero.position, { x: s.heroPos.x, y: s.heroPos.y, z: s.heroPos.z }, 0);
-      activeTween.to(hero.rotation, { x: s.heroRot.x, y: s.heroRot.y, z: s.heroRot.z }, 0);
-      activeTween.to(hero.scale, { x: s.heroScale, y: s.heroScale, z: s.heroScale }, 0);
-      activeTween.to(renderer, { toneMappingExposure: s.exposure }, 0);
-
-      // Smooth lookAt target (interpolated in render loop)
-      gsap.to(lookTarget, { duration: 1.15, ease: "power3.inOut", x: s.lookAt.x, y: s.lookAt.y, z: s.lookAt.z });
-    };
-
-    // --- Mouse parallax (very subtle, premium) ---
-    const mouse = { x: 0, y: 0 };
-    const onMouseMove = (e) => {
-      const nx = (e.clientX / window.innerWidth) * 2 - 1;
-      const ny = (e.clientY / window.innerHeight) * 2 - 1;
-      mouse.x = nx;
-      mouse.y = ny;
-    };
-    window.addEventListener("mousemove", onMouseMove, { passive: true });
-    window.addEventListener("touchmove", (e) => {
-      if (!e.touches?.[0]) return;
-      const t = e.touches[0];
-      const nx = (t.clientX / window.innerWidth) * 2 - 1;
-      const ny = (t.clientY / window.innerHeight) * 2 - 1;
-      mouse.x = nx;
-      mouse.y = ny;
-    }, { passive: true });
-
-    // --- Load model ---
+    // ---- Load GLB ----
     const loader = new GLTFLoader();
     let heroModel = null;
 
@@ -254,58 +131,74 @@ export default function Scene() {
       "/assets/models/bean.glb",
       (gltf) => {
         heroModel = gltf.scene;
-        normalizeObject(heroModel, 2.35);
+        normalizeObject(heroModel, 2.45);
         applyGreenBeanLook(heroModel);
         hero.add(heroModel);
 
-        // Create cluster (secondary beans) by cloning (small count; safe for web)
-        for (let i = 0; i < 12; i++) {
+        // cluster beans (خفيفة)
+        for (let i = 0; i < (isMobile ? 8 : 12); i++) {
           const c = heroModel.clone(true);
           applyGreenBeanLook(c);
 
-          const a = (i / 12) * Math.PI * 2;
-          const r = 2.35;
-          c.position.set(Math.cos(a) * r, (Math.random() - 0.5) * 0.9, Math.sin(a) * (r * 0.65));
-          c.rotation.set(Math.random() * 1.1, Math.random() * 6.2, Math.random() * 1.1);
-          const s = 0.26 + Math.random() * 0.08;
+          const a = (i / (isMobile ? 8 : 12)) * Math.PI * 2;
+          const r = 2.45;
+          c.position.set(Math.cos(a) * r, (Math.random() - 0.5) * 0.8, Math.sin(a) * (r * 0.65));
+          c.rotation.set(Math.random() * 1.0, Math.random() * 6.2, Math.random() * 1.0);
+          const s = 0.26 + Math.random() * 0.07;
           c.scale.multiplyScalar(s);
           cluster.add(c);
         }
 
-        // Initial state (Hero)
-        goToState(0);
+        // ---- One coherent scroll timeline (no snapping, no fighting) ----
+        gsap.ticker.lagSmoothing(0);
 
-        // Section triggers (clean Apple-style scene switching)
-        const sections = Array.from(document.querySelectorAll("section"));
-        sections.forEach((sec, idx) => {
-          ScrollTrigger.create({
-            trigger: sec,
-            start: "top 55%",
-            end: "bottom 45%",
-            onEnter: () => goToState(idx),
-            onEnterBack: () => goToState(idx)
-          });
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: document.querySelector("main"),
+            start: "top top",
+            end: "bottom bottom",
+            scrub: 1.15,
+            fastScrollEnd: true,
+            invalidateOnRefresh: true
+          }
         });
 
-        // Optional: snap to sections (feel premium). Uncomment إذا تبيه:
-        // ScrollTrigger.normalizeScroll(true);
-        // ScrollTrigger.config({ ignoreMobileResize: true });
+        // Scene 1: Intro (قريب/مهيب)
+        tl.to(camera.position, { x: 0.0, y: 0.15, z: 5.6, ease: "none" }, 0);
+        tl.to(hero.rotation, { x: 0.22, y: 0.35, z: 0.0, ease: "none" }, 0);
+        tl.to(hero.position, { x: 0.0, y: 0.0, z: 0.0, ease: "none" }, 0);
+
+        // Scene 2: Story (زاوية مائلة + حركة أفقية)
+        tl.to(camera.position, { x: 1.05, y: 0.55, z: 5.9, ease: "none" }, 0.9);
+        tl.to(hero.rotation, { x: 0.55, y: 1.25, z: 0.10, ease: "none" }, 0.9);
+        tl.to(hero.position, { x: -0.25, y: -0.06, z: 0.0, ease: "none" }, 0.9);
+
+        // Scene 3: Quality (تجميع/إظهار Cluster)
+        tl.add(() => { cluster.visible = true; }, 1.8);
+        tl.to(camera.position, { x: -1.15, y: 0.85, z: 5.7, ease: "none" }, 1.8);
+        tl.to(hero.rotation, { x: 1.00, y: 2.55, z: 0.12, ease: "none" }, 1.8);
+        tl.to(hero.position, { x: 0.95, y: -0.10, z: 0.0, ease: "none" }, 1.8);
+
+        // Scene 4: Services (هدوء + رجوع للوسط)
+        tl.add(() => { cluster.visible = false; }, 2.7);
+        tl.to(camera.position, { x: 0.25, y: 0.28, z: 6.45, ease: "none" }, 2.7);
+        tl.to(hero.rotation, { x: 0.55, y: 3.65, z: 0.0, ease: "none" }, 2.7);
+        tl.to(hero.position, { x: 0.35, y: -0.06, z: 0.0, ease: "none" }, 2.7);
+
+        // Scene 5: Investors/Contact (wide + premium finish)
+        tl.to(camera.position, { x: 0.0, y: 0.12, z: 7.05, ease: "none" }, 3.5);
+        tl.to(hero.rotation, { x: 0.28, y: 4.65, z: 0.0, ease: "none" }, 3.5);
+
+        // Exposure slight breathing (premium)
+        tl.to(renderer, { toneMappingExposure: 1.10, ease: "none" }, 3.5);
+
+        ScrollTrigger.refresh();
       },
       undefined,
-      () => {
-        // fail silently
-      }
+      () => {}
     );
 
-    // --- Resize ---
-    const onResize = () => {
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
-    };
-    window.addEventListener("resize", onResize);
-
-    // --- Render loop ---
+    // ---- Stable render loop (no camera edits here) ----
     const clock = new THREE.Clock();
     let raf = 0;
 
@@ -313,52 +206,48 @@ export default function Scene() {
       raf = requestAnimationFrame(animate);
       const t = clock.getElapsedTime();
 
-      // Subtle premium drift (continuous, not fighting the state)
-      hero.rotation.y += 0.0025; // slow rotation always
-      hero.position.y += Math.sin(t * 1.2) * 0.0006;
+      // gentle continuous motion (غير متعارض مع الـtimeline)
+      rig.rotation.y = t * 0.12;                 // دوران عالمي خفيف
+      hero.position.y = Math.sin(t * 1.2) * 0.03; // طفو بسيط
 
-      // Cluster orbit (only when visible)
       if (cluster.visible) {
         cluster.rotation.y = t * 0.35;
         cluster.rotation.x = Math.sin(t * 0.35) * 0.06;
       }
 
-      // Dust drift
-      dust.rotation.y += 0.0009;
+      dust.rotation.y = t * 0.03;
 
-      // Mouse parallax (tiny)
-      const parX = mouse.x * 0.12;
-      const parY = -mouse.y * 0.08;
-      camera.position.x += (parX - camera.position.x * 0.0) * 0.02; // tiny push
-      camera.position.y += (parY - camera.position.y * 0.0) * 0.02;
-
-      // Smooth lookAt
-      lookCurrent.lerp(lookTarget, 0.08);
-      camera.lookAt(lookCurrent);
-
+      camera.lookAt(0, 0, 0);
       renderer.render(scene, camera);
     };
     animate();
 
+    // ---- Resize ----
+    const onResize = () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      const mobile = Math.min(window.innerWidth, window.innerHeight) < 768;
+      renderer.setPixelRatio(mobile ? 1 : Math.min(1.6, window.devicePixelRatio));
+
+      ScrollTrigger.refresh();
+    };
+    window.addEventListener("resize", onResize);
+
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener("resize", onResize);
-      window.removeEventListener("mousemove", onMouseMove);
       ScrollTrigger.getAll().forEach((t) => t.kill());
+
       renderer.dispose();
       pmrem.dispose();
 
-      // remove canvas safely
-      if (renderer.domElement && renderer.domElement.parentNode) {
+      if (renderer.domElement?.parentNode) {
         renderer.domElement.parentNode.removeChild(renderer.domElement);
       }
     };
   }, []);
 
-  return (
-    <div
-      ref={ref}
-      style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none" }}
-    />
-  );
+  return <div ref={ref} style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none" }} />;
 }
