@@ -43,7 +43,7 @@ body{
   text-decoration:none;
 }
 .brandLogo{
-  width:68px;         /* شعار واضح لكن ليس ضخم */
+  width:84px; /* أكبر شوي من السابق */
   height:auto;
   display:block;
   filter: drop-shadow(0 10px 18px rgba(0,0,0,.10));
@@ -77,7 +77,7 @@ body{
 .nav a{
   text-decoration:none;
   color:rgba(0,0,0,.75);
-  font-weight:700;
+  font-weight:800;
   padding:10px 12px;
   border-radius:14px;
 }
@@ -105,9 +105,7 @@ body{
 }
 
 /* ====== Hero ====== */
-.hero{
-  padding: 28px 0 24px;
-}
+.hero{ padding: 28px 0 24px; }
 .heroGrid{
   display:grid;
   grid-template-columns: 1.15fr .85fr;
@@ -130,7 +128,7 @@ body{
   background: rgba(149,173,114,.16);
   border:1px solid rgba(149,173,114,.20);
   color: rgba(0,0,0,.75);
-  font-weight:800;
+  font-weight:900;
   font-size:.95rem;
 }
 h1{
@@ -143,7 +141,7 @@ h1 span{
   display:block;
   margin-top:10px;
   color: var(--muted);
-  font-weight:600;
+  font-weight:700;
   font-size: clamp(1rem, 2.2vw, 1.15rem);
 }
 .ctaRow{
@@ -182,7 +180,7 @@ h1 span{
   border:1px solid var(--line);
   padding:8px 10px;
   border-radius:999px;
-  font-weight:800;
+  font-weight:900;
   color: rgba(0,0,0,.72);
   font-size:.92rem;
 }
@@ -207,9 +205,7 @@ h1 span{
 .t4{ transform: rotate(-2deg); }
 
 /* ====== Sections ====== */
-.section{
-  padding: 46px 0;
-}
+.section{ padding: 46px 0; }
 .section.soft{
   background: rgba(255,255,255,.35);
   border-top: 1px solid rgba(0,0,0,.04);
@@ -223,78 +219,88 @@ h1 span{
   margin:0;
   color: var(--muted);
   max-width: 720px;
-  font-weight:600;
-}
-
-/* Stats */
-.stats{
-  margin-top:18px;
-  display:grid;
-  grid-template-columns: repeat(3,1fr);
-  gap:12px;
-}
-.statCard{
-  background:#fff;
-  border:1px solid var(--line);
-  border-radius:22px;
-  padding:18px;
-  box-shadow: var(--shadow);
-}
-.statNum{
-  font-weight:900;
-  font-size: clamp(1.6rem, 3.5vw, 2.4rem);
-}
-.statLbl{
-  margin-top:6px;
-  color: var(--muted);
   font-weight:700;
 }
 
-/* Gallery */
-.gallery{
-  margin-top:18px;
+/* ====== Split layout (نص + صورة مرتبطة) ====== */
+.split{
   display:grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap:12px;
+  grid-template-columns: 1.05fr .95fr;
+  gap:16px;
+  align-items:start;
 }
-.shot{
-  height: 180px;
+.split.reverse .splitText{ order:2; }
+.split.reverse .splitMedia{ order:1; }
+
+.splitText{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:26px;
+  padding:18px;
+  box-shadow: var(--shadow);
+}
+.splitMedia{ display:grid; gap:10px; }
+.mediaFrame{
+  height: 340px;
   border-radius: 26px;
   border: 1px solid var(--line);
   box-shadow: var(--shadow);
   background-size: cover;
   background-position:center;
-  transform: rotate(-1deg);
 }
-.shot:nth-child(2n){ transform: rotate(1deg); }
+.mediaFrame.tall{ height: 410px; }
+.mediaCaption{
+  color: rgba(0,0,0,.55);
+  font-weight:800;
+  padding: 0 6px;
+}
+
+/* Bullets (نبذة) */
+.bullets{
+  margin-top:14px;
+  display:grid;
+  gap:10px;
+}
+.bullet{
+  display:grid;
+  grid-template-columns: 12px 1fr;
+  gap:10px;
+  align-items:start;
+  padding:12px 14px;
+  border-radius:18px;
+  border:1px solid rgba(0,0,0,.06);
+  background: rgba(246,241,233,.55);
+}
+.bDot{
+  width:10px; height:10px;
+  margin-top:7px;
+  border-radius:50%;
+  background: linear-gradient(135deg, var(--accent), var(--gold));
+}
+.bTitle{ font-weight:900; }
+.bText{ color: var(--muted); font-weight:700; }
 
 /* Cards */
 .cards3{
-  margin-top:18px;
+  margin-top:14px;
   display:grid;
   grid-template-columns: repeat(3, 1fr);
   gap:12px;
 }
+.cards3.compact{ margin-top:12px; }
 .card{
   background:#fff;
   border:1px solid var(--line);
   border-radius:22px;
-  padding:18px;
+  padding:16px;
   box-shadow: var(--shadow);
 }
-.card h3{
-  margin:0 0 6px;
-  font-size:1.15rem;
-}
-.card p{
-  margin:0;
-  color: var(--muted);
-  font-weight:600;
-}
+.card h3{ margin:0 0 6px; font-size:1.1rem; }
+.card p{ margin:0; color: var(--muted); font-weight:700; }
 
 /* Steps */
 .steps{
-  margin-top:18px;
+  margin-top:14px;
   display:grid;
   gap:12px;
 }
@@ -305,7 +311,7 @@ h1 span{
   background:#fff;
   border:1px solid var(--line);
   border-radius:22px;
-  padding:18px;
+  padding:16px;
   box-shadow: var(--shadow);
 }
 .dot{
@@ -314,6 +320,8 @@ h1 span{
   border-radius:50%;
   background: linear-gradient(135deg, var(--accent), var(--gold));
 }
+.step h3{ margin:0 0 6px; }
+.step p{ margin:0; color: var(--muted); font-weight:700; }
 
 /* Contact */
 .contactBox{
@@ -327,31 +335,22 @@ h1 span{
   gap:12px;
   align-items:start;
 }
-.contactMini{
-  display:grid;
-  gap:10px;
-}
+.contactMini{ display:grid; gap:10px; }
 .miniCard{
   border:1px solid var(--line);
   border-radius:18px;
   padding:14px;
   background: rgba(246,241,233,.60);
 }
-.miniTitle{
-  font-weight:900;
-  margin-bottom:4px;
-}
-.miniText{
-  color: var(--muted);
-  font-weight:700;
-}
+.miniTitle{ font-weight:900; margin-bottom:4px; }
+.miniText{ color: var(--muted); font-weight:800; }
 
 /* Footer */
 .footer{
   margin-top:16px;
   padding:14px 0 4px;
   color: rgba(0,0,0,.55);
-  font-weight:700;
+  font-weight:800;
   text-align:center;
 }
 
@@ -375,11 +374,16 @@ h1 span{
   .nav.open{ display:flex; }
 
   .heroGrid{ grid-template-columns:1fr; }
-  .stats{ grid-template-columns:1fr; }
-  .gallery{ grid-template-columns:1fr; }
+  .split{ grid-template-columns:1fr; }
+  .split.reverse .splitText{ order:1; }
+  .split.reverse .splitMedia{ order:2; }
+
   .cards3{ grid-template-columns:1fr; }
   .contactBox{ grid-template-columns:1fr; }
 
-  .brandLogo{ width:60px; }
+  .brandLogo{ width:92px; } /* موبايل: واضح بدون مبالغة */
   .page{ padding-top:74px; }
+
+  .mediaFrame{ height: 260px; }
+  .mediaFrame.tall{ height: 300px; }
 }
