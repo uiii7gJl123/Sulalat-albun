@@ -1,253 +1,241 @@
-*{box-sizing:border-box}
-:root{
-  --bg:#f6f1e9;
-  --panel:rgba(255,255,255,.72);
-  --panel2:rgba(255,255,255,.88);
-  --line:rgba(0,0,0,.08);
-  --fg:#161616;
-  --muted:rgba(0,0,0,.62);
-  --accent:#95ad72; /* green coffee vibe */
-  --gold:#caa56b;
+/* ===============================
+   GLOBAL RESET & VARIABLES
+================================ */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-html,body{height:100%}
-body{
-  margin:0;
-  background: radial-gradient(70% 70% at 50% 10%, rgba(149,173,114,.10), rgba(246,241,233,0)),
-              radial-gradient(55% 55% at 80% 85%, rgba(202,165,107,.14), rgba(246,241,233,0));
-  background-color:var(--bg);
-  color:var(--fg);
+:root {
+  --bg: #f6f1e9;        /* خلفية فاتحة */
+  --panel: #ffffff;
+  --line: rgba(0,0,0,.08);
+  --fg: #1c1c1c;
+  --muted: rgba(0,0,0,.65);
+  --accent: #95ad72;    /* أخضر قهوة */
+  --gold: #8b6b3e;
+}
+
+/* ===============================
+   BASE
+================================ */
+html, body {
+  height: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
   font-family: system-ui, -apple-system, "Cairo", Segoe UI, Roboto, Arial;
-  overflow-x:hidden;
+  line-height: 1.8;
+  overflow-x: hidden;
 }
 
-/* ====== TOP BAR ====== */
-.topbar{
-  position:sticky; top:0; left:0; right:0;
-  display:flex; align-items:center; justify-content:center;
-  padding:12px 16px;
-  z-index:50;
-  background: rgba(246,241,233,.92);
-  backdrop-filter: blur(12px);
-  border-bottom:1px solid var(--line);
+/* ===============================
+   TOP BAR
+================================ */
+.topbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(246,241,233,.96);
+  border-bottom: 1px solid var(--line);
+  z-index: 10;
 }
 
-/* شعار كبير لكن مضبوط (بدون ما يكسر الصفحة) */
-.brand{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:0;
-  width:100%;
-}
-.logo{
-  width:auto;
-  height:46px;          /* التحكم بحجم الشعار */
-  max-width:min(78vw, 360px);
-  border-radius:12px;
-  border:1px solid var(--line);
-  background:#fff;
-  object-fit:contain;
-  display:block;
-  padding:6px 10px;     /* يعطيه بروز */
-  box-shadow: 0 10px 30px rgba(0,0,0,.10);
+/* ===============================
+   BRAND / LOGO
+================================ */
+.brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* نخفي نص الاسم/التاق بالكامل */
-.brandName, .brandTag{display:none !important}
-
-/* نخفي الناف (موب/ستايل بسيط مثل المرجع) */
-.nav{display:none !important}
-.nav a{display:none !important}
-
-/* ====== PAGE / SECTIONS ====== */
-.page{position:relative; z-index:1; padding-top:0}
-
-section{padding:70px 8vw}
-.hero{
-  min-height:calc(100vh - 72px);
-  display:flex;
-  flex-direction:column;
-  gap:26px;
-  justify-content:center;
-  padding-top:34px;
+/* الشعار فقط – بدون اسم نصي */
+.logo {
+  width: 88px;
+  height: 88px;
+  background: transparent;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.heroGrid{
-  display:grid;
+.logo img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ===============================
+   PAGE
+================================ */
+.page {
+  padding-top: 72px;
+}
+
+/* ===============================
+   SECTIONS
+================================ */
+section {
+  padding: 80px 8vw;
+  background: transparent;
+}
+
+/* ===============================
+   HERO
+================================ */
+.hero {
+  min-height: calc(100vh - 72px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.heroGrid {
+  display: grid;
   grid-template-columns: 1fr;
-  gap:22px;
-  align-items:start;
+  gap: 32px;
+  max-width: 1100px;
+  width: 100%;
 }
 
-/* ====== TEXT ====== */
-.pill{
-  display:inline-block;
-  padding:9px 14px;
-  border-radius:999px;
-  border:1px solid var(--line);
-  background:rgba(255,255,255,.55);
-  color:rgba(0,0,0,.78);
-  font-size:.92rem;
+/* ===============================
+   TEXT
+================================ */
+h1 {
+  font-size: clamp(2.2rem, 5vw, 3.8rem);
+  font-weight: 800;
+  line-height: 1.15;
 }
 
-h1{
-  margin:14px 0 10px;
-  font-size:clamp(2.1rem,6.2vw,3.6rem);
-  letter-spacing:-.03em;
-  line-height:1.08;
-  color:var(--fg);
-}
-h1 span{
-  display:block;
-  font-size:clamp(1.0rem,2.4vw,1.35rem);
-  color:rgba(0,0,0,.60);
-  margin-top:12px;
-  line-height:1.7;
+h2 {
+  font-size: clamp(1.6rem, 3.5vw, 2.6rem);
+  font-weight: 700;
 }
 
-h2{margin:0 0 10px; font-size:clamp(1.7rem,3.4vw,2.6rem); letter-spacing:-.02em; color:var(--fg)}
-h3{margin:0 0 10px; font-size:1.15rem; color:var(--fg)}
-p{margin:0; color:var(--muted); line-height:1.95; max-width:740px}
-
-/* ====== CTA ====== */
-.ctaRow{display:flex; gap:12px; flex-wrap:wrap; margin-top:18px}
-.btn{
-  display:inline-flex; align-items:center; justify-content:center;
-  padding:12px 18px; border-radius:16px;
-  background: linear-gradient(135deg, rgba(149,173,114,.35), rgba(202,165,107,.55));
-  color:#111; text-decoration:none; font-weight:800;
-  border:1px solid rgba(0,0,0,.08);
-  box-shadow: 0 14px 34px rgba(0,0,0,.10);
-}
-.btn.ghost{
-  background:rgba(255,255,255,.78);
-  color:rgba(0,0,0,.78);
-  border:1px solid var(--line);
-  box-shadow:none;
-}
-.btn:hover{filter:brightness(1.02)}
-.hint{margin-top:16px; font-size:.92rem; color:rgba(0,0,0,.52)}
-
-/* ====== صور (كولاج مثل المرجع بدل “تقسيم” داكن) ====== */
-.filmstrip{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:12px;
-  margin-top:18px;
-}
-@media (min-width: 900px){
-  .filmstrip{grid-template-columns:repeat(3,1fr)}
-}
-.shot{
-  height:190px;
-  border-radius:22px;
-  border:1px solid var(--line);
-  background-size:cover;
-  background-position:center;
-  filter:saturate(1.03) contrast(1.02);
-  opacity:1;
-  box-shadow: 0 18px 40px rgba(0,0,0,.12);
-  transform: rotate(-2deg);
-}
-.shot:nth-child(2){transform: rotate(2deg)}
-.shot:nth-child(3){transform: rotate(-1deg)}
-.shot:nth-child(4){transform: rotate(1.5deg)}
-
-/* ====== Blocks / Cards ====== */
-.block{padding-top:70px; padding-bottom:70px}
-.blockHead{margin-bottom:22px}
-
-.grid3{
-  display:grid;
-  grid-template-columns:1fr;
-  gap:14px;
-}
-.grid2{
-  display:grid;
-  grid-template-columns:1fr;
-  gap:14px;
-}
-@media (min-width: 900px){
-  .grid3{grid-template-columns:repeat(3,1fr)}
-  .grid2{grid-template-columns:repeat(2,1fr)}
+h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
 }
 
-.card,.panel{
-  padding:18px;
-  border-radius:22px;
-  border:1px solid var(--line);
-  background:var(--panel);
-  box-shadow: 0 18px 46px rgba(0,0,0,.10);
+p {
+  max-width: 680px;
+  color: var(--muted);
+  font-size: 1rem;
 }
 
-/* ====== Stats ====== */
-.heroSide{display:grid; gap:12px}
-.stat{
-  padding:16px 18px;
-  border:1px solid var(--line);
-  background:var(--panel2);
-  border-radius:22px;
-  box-shadow: 0 16px 40px rgba(0,0,0,.10);
-}
-.statNum{
-  font-weight:900;
-  letter-spacing:-.02em;
-  font-size:1.6rem;
-  color:var(--fg);
-  direction:ltr;          /* يمنع تفكك + */
-  unicode-bidi:plaintext; /* يمنع مشاكل RTL */
-}
-.statLabel{color:rgba(0,0,0,.60); margin-top:6px; font-size:.95rem}
-
-/* ====== Timeline ====== */
-.timeline{display:grid; gap:14px}
-.step{
-  display:grid;
-  grid-template-columns: 18px 1fr;
-  gap:12px;
-  align-items:start;
-  padding:16px 18px;
-  border:1px solid var(--line);
-  border-radius:22px;
-  background:var(--panel);
-  box-shadow: 0 18px 46px rgba(0,0,0,.10);
-}
-.dot{
-  width:12px;height:12px;border-radius:50%;
-  margin-top:7px;
-  background:linear-gradient(135deg, rgba(149,173,114,1), rgba(202,165,107,1));
+/* ===============================
+   BUTTONS
+================================ */
+.ctaRow {
+  display: flex;
+  gap: 12px;
+  margin-top: 22px;
+  flex-wrap: wrap;
 }
 
-/* ====== IMPORTANT: حذف أي شيء للمستثمرين (ما عاد له ستايل) ====== */
-.investBox{display:none !important}
-.investCTA{display:none !important}
-.investBox ul{display:none !important}
-
-/* ====== Contact ====== */
-.badge{
-  display:inline-block;
-  padding:7px 10px;
-  border-radius:999px;
-  border:1px solid var(--line);
-  background:rgba(255,255,255,.70);
-}
-.small{font-size:.95rem; color:rgba(0,0,0,.58)}
-
-.contactRow{
-  display:grid;
-  grid-template-columns:1fr;
-  gap:14px;
-}
-@media (min-width: 900px){
-  .contactRow{grid-template-columns:repeat(3,1fr)}
+.btn {
+  padding: 12px 22px;
+  border-radius: 999px;
+  font-weight: 700;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  background: linear-gradient(135deg, var(--accent), var(--gold));
+  color: #fff;
 }
 
-/* ====== Footer ====== */
-.footer{
-  margin-top:40px;
-  padding-top:18px;
-  border-top:1px solid var(--line);
-  display:flex; justify-content:space-between; gap:14px; flex-wrap:wrap;
-  color:rgba(0,0,0,.55);
+.btn:hover {
+  opacity: .9;
+}
+
+.btn.ghost {
+  background: transparent;
+  color: var(--fg);
+  border: 1px solid var(--line);
+}
+
+/* ===============================
+   IMAGE GRID (FARMS)
+================================ */
+.filmstrip {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin-top: 40px;
+}
+
+.shot {
+  height: 200px;
+  border-radius: 20px;
+  background-size: cover;
+  background-position: center;
+  border: 1px solid var(--line);
+}
+
+/* ===============================
+   CARDS
+================================ */
+.card, .panel {
+  background: var(--panel);
+  border-radius: 20px;
+  padding: 22px;
+  border: 1px solid var(--line);
+}
+
+/* ===============================
+   GRIDS
+================================ */
+.grid2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 22px;
+}
+
+.grid3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+}
+
+/* ===============================
+   FOOTER
+================================ */
+.footer {
+  margin-top: 80px;
+  padding: 30px 8vw;
+  border-top: 1px solid var(--line);
+  font-size: .95rem;
+  color: var(--muted);
+  text-align: center;
+}
+
+/* ===============================
+   RESPONSIVE
+================================ */
+@media (max-width: 900px) {
+
+  section {
+    padding: 60px 6vw;
+  }
+
+  .filmstrip {
+    grid-template-columns: 1fr;
+  }
+
+  .grid2, .grid3 {
+    grid-template-columns: 1fr;
+  }
+
+  .logo {
+    width: 72px;
+    height: 72px;
+  }
 }
