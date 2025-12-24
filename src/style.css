@@ -1,5 +1,5 @@
 /* ===============================
-   GLOBAL RESET & VARIABLES
+   RESET & VARIABLES
 ================================ */
 * {
   box-sizing: border-box;
@@ -8,12 +8,12 @@
 }
 
 :root {
-  --bg: #f6f1e9;        /* خلفية فاتحة */
+  --bg: #f6f1e9;
   --panel: #ffffff;
   --line: rgba(0,0,0,.08);
   --fg: #1c1c1c;
   --muted: rgba(0,0,0,.65);
-  --accent: #95ad72;    /* أخضر قهوة */
+  --accent: #95ad72;
   --gold: #8b6b3e;
 }
 
@@ -28,7 +28,7 @@ body {
   background: var(--bg);
   color: var(--fg);
   font-family: system-ui, -apple-system, "Cairo", Segoe UI, Roboto, Arial;
-  line-height: 1.8;
+  line-height: 1.7;
   overflow-x: hidden;
 }
 
@@ -37,8 +37,10 @@ body {
 ================================ */
 .topbar {
   position: fixed;
-  top: 0; left: 0; right: 0;
-  height: 72px;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 64px;              /* أصغر */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -56,12 +58,10 @@ body {
   justify-content: center;
 }
 
-/* الشعار فقط – بدون اسم نصي */
+/* 🔹 الشعار بحجم قريب من النص */
 .logo {
-  width: 88px;
-  height: 88px;
-  background: transparent;
-  border: none;
+  width: 48px;
+  height: 48px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -77,58 +77,56 @@ body {
    PAGE
 ================================ */
 .page {
-  padding-top: 72px;
+  padding-top: 64px; /* نفس ارتفاع الهيدر */
 }
 
 /* ===============================
    SECTIONS
 ================================ */
 section {
-  padding: 80px 8vw;
-  background: transparent;
+  padding: 56px 7vw; /* تقليل الارتفاع */
 }
 
 /* ===============================
    HERO
 ================================ */
 .hero {
-  min-height: calc(100vh - 72px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  min-height: auto;          /* مهم: لا يأخذ شاشة كاملة */
+  padding-top: 40px;
+  padding-bottom: 40px;
 }
 
 .heroGrid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 32px;
-  max-width: 1100px;
-  width: 100%;
+  gap: 24px;
+  max-width: 1000px;
+  margin: auto;
 }
 
 /* ===============================
    TEXT
 ================================ */
 h1 {
-  font-size: clamp(2.2rem, 5vw, 3.8rem);
+  font-size: clamp(2rem, 4.5vw, 3.2rem);
   font-weight: 800;
   line-height: 1.15;
 }
 
 h2 {
-  font-size: clamp(1.6rem, 3.5vw, 2.6rem);
+  font-size: clamp(1.4rem, 3vw, 2.2rem);
   font-weight: 700;
 }
 
 h3 {
-  font-size: 1.25rem;
+  font-size: 1.15rem;
   font-weight: 600;
 }
 
 p {
   max-width: 680px;
   color: var(--muted);
-  font-size: 1rem;
+  font-size: .98rem;
 }
 
 /* ===============================
@@ -136,13 +134,13 @@ p {
 ================================ */
 .ctaRow {
   display: flex;
-  gap: 12px;
-  margin-top: 22px;
+  gap: 10px;
+  margin-top: 18px;
   flex-wrap: wrap;
 }
 
 .btn {
-  padding: 12px 22px;
+  padding: 10px 20px;
   border-radius: 999px;
   font-weight: 700;
   text-decoration: none;
@@ -152,10 +150,6 @@ p {
   color: #fff;
 }
 
-.btn:hover {
-  opacity: .9;
-}
-
 .btn.ghost {
   background: transparent;
   color: var(--fg);
@@ -163,56 +157,53 @@ p {
 }
 
 /* ===============================
-   IMAGE GRID (FARMS)
+   IMAGE GRID
 ================================ */
 .filmstrip {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 18px;
-  margin-top: 40px;
+  gap: 16px;
+  margin-top: 28px;
 }
 
 .shot {
-  height: 200px;
-  border-radius: 20px;
+  height: 180px;
+  border-radius: 18px;
   background-size: cover;
   background-position: center;
   border: 1px solid var(--line);
 }
 
 /* ===============================
-   CARDS
+   CARDS & GRIDS
 ================================ */
 .card, .panel {
   background: var(--panel);
-  border-radius: 20px;
-  padding: 22px;
+  border-radius: 18px;
+  padding: 20px;
   border: 1px solid var(--line);
 }
 
-/* ===============================
-   GRIDS
-================================ */
 .grid2 {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 22px;
+  gap: 20px;
 }
 
 .grid3 {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 22px;
+  gap: 20px;
 }
 
 /* ===============================
    FOOTER
 ================================ */
 .footer {
-  margin-top: 80px;
-  padding: 30px 8vw;
+  margin-top: 60px;
+  padding: 24px 7vw;
   border-top: 1px solid var(--line);
-  font-size: .95rem;
+  font-size: .9rem;
   color: var(--muted);
   text-align: center;
 }
@@ -223,19 +214,20 @@ p {
 @media (max-width: 900px) {
 
   section {
-    padding: 60px 6vw;
+    padding: 44px 6vw;
   }
 
   .filmstrip {
     grid-template-columns: 1fr;
   }
 
-  .grid2, .grid3 {
+  .grid2,
+  .grid3 {
     grid-template-columns: 1fr;
   }
 
   .logo {
-    width: 72px;
-    height: 72px;
+    width: 42px;
+    height: 42px;
   }
 }
