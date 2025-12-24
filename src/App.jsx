@@ -1,169 +1,240 @@
-const Stat = ({ n, t }) => (
-  <div className="stat">
-    {/* حل مشكلة + في RTL: نخلي الرقم LTR */}
-    <div className="statN" dir="ltr">{n}</div>
-    <div className="statT">{t}</div>
-  </div>
-);
+import React, { useEffect, useMemo, useState } from "react";
 
-const Feature = ({ icon, title, text }) => (
-  <div className="feature">
-    <div className="featureIcon" aria-hidden="true">{icon}</div>
-    <div className="featureBody">
-      <h3>{title}</h3>
-      <p>{text}</p>
-    </div>
-  </div>
-);
+const IMG = (n) => `/assets/images/farm-${n}.jpg`;
+const LOGO = `/assets/images/logo.png`;
+
+function useReveal() {
+  useEffect(() => {
+    const els = Array.from(document.querySelectorAll("[data-reveal]"));
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) e.target.classList.add("is-in");
+        }
+      },
+      { threshold: 0.12 }
+    );
+    els.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, []);
+}
 
 export default function App() {
+  useReveal();
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const gallery = useMemo(() => [1, 2, 3, 4, 5, 6], []);
+
   return (
-    <div className="site" dir="rtl">
-      {/* Header: شعار كبير لوحده */}
-      <header className="header">
-        <img className="brandLogo" src="/assets/images/logo.png" alt="سلالة البن" />
+    <div className="app">
+      <header className="topbar">
+        <div className="topbarInner">
+          <a className="brand" href="#home" onClick={() => setMenuOpen(false)}>
+            <img className="brandLogo" src={LOGO} alt="شعار سلالة البن الفاخر" />
+          </a>
+
+          <button
+            className="menuBtn"
+            aria-label="القائمة"
+            onClick={() => setMenuOpen((v) => !v)}
+          >
+            <span />
+            <span />
+            <span />
+          </button>
+
+          <nav className={`nav ${menuOpen ? "open" : ""}`}>
+            <a href="#about" onClick={() => setMenuOpen(false)}>نبذة</a>
+            <a href="#services" onClick={() => setMenuOpen(false)}>خدماتنا</a>
+            <a href="#quality" onClick={() => setMenuOpen(false)}>الجودة</a>
+            <a href="#contact" onClick={() => setMenuOpen(false)}>تواصل</a>
+          </nav>
+        </div>
       </header>
 
-      {/* HERO */}
-      <section className="hero">
-        <div className="heroInner">
-          <div className="heroText">
-            <h1>
-              سلالة البن… <span className="accent">رحلة جودة</span> تبدأ من المزرعة
-            </h1>
+      <main id="home" className="page">
+        {/* HERO */}
+        <section className="hero">
+          <div className="wrap heroGrid">
+            <div className="heroText" data-reveal>
+              <div className="kicker">بن أخضر فاخر • سلسلة توريد موثوقة</div>
+              <h1>
+                سلالة البن الفاخر
+                <span>توريد بن أخضر بجودة ثابتة وخيارات متنوعة تلائم مختلف الأذواق.</span>
+              </h1>
 
-            {/* نص من ملف الملاحظات */}
-            <p>
-              تمثّل سلالة البن مفهومًا متكاملًا يتجاوز فكرة استيراد البن الأخضر؛
-              رحلة تبدأ من أجود المزارع في أمريكا اللاتينية، وتمتد إلى فنجان يحمل
-              توقيع الجودة، والهوية، والتميّز.
-            </p>
+              <div className="ctaRow">
+                <a className="btn" href="#contact">تواصل معنا</a>
+                <a className="btn ghost" href="#services">استعرض الخدمات</a>
+              </div>
 
-            <div className="heroCtas">
-              <a className="btnGold" href="#contact">تواصل معنا</a>
-              <a className="btnGhost" href="#services">استعرض الخدمات</a>
+              <div className="miniNotes">
+                <div className="pill">تغليف آمن</div>
+                <div className="pill">توريد واضح</div>
+                <div className="pill">استمرارية</div>
+              </div>
+            </div>
+
+            <div className="heroMosaic" data-reveal>
+              <div className="tile t1" style={{ backgroundImage: `url(${IMG(1)})` }} />
+              <div className="tile t2" style={{ backgroundImage: `url(${IMG(2)})` }} />
+              <div className="tile t3" style={{ backgroundImage: `url(${IMG(3)})` }} />
+              <div className="tile t4" style={{ backgroundImage: `url(${IMG(4)})` }} />
             </div>
           </div>
+        </section>
 
-          {/* كولاج صور مائل (مشابه للمرجع) */}
-          <div className="collage">
-            <div className="tile t1" style={{ backgroundImage: "url(/assets/images/farm-1.jpg)" }} />
-            <div className="tile t2" style={{ backgroundImage: "url(/assets/images/farm-2.jpg)" }} />
-            <div className="tile t3" style={{ backgroundImage: "url(/assets/images/farm-3.jpg)" }} />
-            <div className="tile t4" style={{ backgroundImage: "url(/assets/images/farm-4.jpg)" }} />
+        {/* ABOUT */}
+        <section id="about" className="section">
+          <div className="wrap">
+            <div className="sectionHead" data-reveal>
+              <h2>نبذة عنا</h2>
+              <p>
+                سلالة البن علامة متخصصة في توريد البن الأخضر، تركّز على ثبات الجودة ووضوح سلسلة التوريد
+                وتعدد الخيارات بما يخدم محامص ومتاجر القهوة المختصة.
+              </p>
+            </div>
+
+            <div className="stats" data-reveal>
+              <div className="statCard">
+                <div className="statNum">+250</div>
+                <div className="statLbl">عميل</div>
+              </div>
+              <div className="statCard">
+                <div className="statNum">+40</div>
+                <div className="statLbl">شريك حول العالم</div>
+              </div>
+              <div className="statCard">
+                <div className="statNum">+10</div>
+                <div className="statLbl">سنوات خبرة</div>
+              </div>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* STRIP */}
-      <section className="strip">
-        <div className="stripInner">
-          <div className="stripTitle">سلاسة في التوريد</div>
-          <div className="stripText">
-            جودة ثابتة • معايير واضحة • توريد موثوق • تعامل مهني
+        {/* GALLERY */}
+        <section className="section soft">
+          <div className="wrap">
+            <div className="sectionHead" data-reveal>
+              <h2>من المزرعة إلى الجودة</h2>
+              <p>لقطات من مصدر البن وسياق الحصاد والعناية — لتعكس روح العلامة.</p>
+            </div>
+
+            <div className="gallery" data-reveal>
+              {gallery.map((n) => (
+                <div
+                  key={n}
+                  className={`shot s${n}`}
+                  style={{ backgroundImage: `url(${IMG(n)})` }}
+                  role="img"
+                  aria-label={`صورة مزرعة ${n}`}
+                />
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* ABOUT (من ملف الـ docx بعد حذف المستثمرين) */}
-      <section className="section" id="about">
-        <h2 className="sectionTitle">نبذة مختصرة</h2>
-        <p className="prose">
-          سلالة البن علامة متخصصة في استيراد البن الأخضر عالي الجودة، انطلقت من شغف
-          حقيقي بالقهوة ورغبة في تقديم منتج يُختار بعناية وفق معايير دقيقة تشمل الجودة،
-          والاستدامة، وثبات الإنتاج.
-        </p>
-      </section>
+        {/* SERVICES */}
+        <section id="services" className="section">
+          <div className="wrap">
+            <div className="sectionHead" data-reveal>
+              <h2>خدماتنا المتكاملة</h2>
+              <p>مجموعة خدمات تلبي احتياج محامص ومتاجر القهوة المختصة بشكل عملي وواضح.</p>
+            </div>
 
-      {/* SERVICES */}
-      <section className="section" id="services">
-        <h2 className="sectionTitle">منتجاتنا وخدماتنا</h2>
-        <p className="sectionSub">
-          نقدم حلول توريد تدعم احتياجات المحامص ومتاجر القهوة المختصة.
-        </p>
-
-        <div className="features">
-          <Feature
-            icon="🌿"
-            title="بن أخضر عالي الجودة"
-            text="توريد بن غير محمّص مختار بعناية وفق معايير ثابتة."
-          />
-          <Feature
-            icon="🔥"
-            title="تحميص عند الطلب"
-            text="خدمة تحميص احترافية حسب الاحتياج وبمخرجات ثابتة."
-          />
-          <Feature
-            icon="🏪"
-            title="توريد مخصص"
-            text="توريد مخصص للكافيهات والمحمصات حسب الكميات والجدولة."
-          />
-          <Feature
-            icon="🤝"
-            title="شراكات توريد طويلة الأمد"
-            text="علاقات توريد مستقرة تضمن استمرارية وتخطيط أفضل."
-          />
-        </div>
-      </section>
-
-      {/* WHY */}
-      <section className="section">
-        <h2 className="sectionTitle">لماذا سلالة البن؟</h2>
-        <div className="features">
-          <Feature icon="✅" title="استيراد مباشر من المصدر" text="وصول أفضل للأصناف ومعايير اختيار أوضح." />
-          <Feature icon="📌" title="جودة ثابتة" text="معايير واضحة لضمان ثبات التجربة عبر الشحنات." />
-          <Feature icon="📈" title="قابلية للتوسع" text="نموذج تشغيل مرن قابل للتوسع مع احتياج السوق." />
-          <Feature icon="🔍" title="شفافية بالتعامل" text="تواصل واضح وخطوات توريد منظمة." />
-        </div>
-      </section>
-
-      {/* STATS (بدون + في البداية) */}
-      <section className="section stats">
-        <Stat n="250+" t="عميل" />
-        <Stat n="350+" t="نوع بن" />
-        <Stat n="40+" t="شريك" />
-        <Stat n="10+" t="سنوات خبرة" />
-      </section>
-
-      {/* Sustainability + Vision (من docx بدون المستثمرين) */}
-      <section className="section">
-        <h2 className="sectionTitle">الاستدامة والمسؤولية</h2>
-        <p className="prose">
-          نلتزم بممارسات زراعية وأخلاقية مسؤولة من خلال دعم الموردين وبناء سلسلة توريد
-          شفافة تضمن استدامة الجودة والأثر الإيجابي.
-        </p>
-      </section>
-
-      <section className="section">
-        <h2 className="sectionTitle">رؤيتنا</h2>
-        <p className="prose">
-          نسعى لأن نكون مرجعًا موثوقًا في توريد البن الأخضر لقطاع القهوة المختصة، عبر
-          توسيع نطاق الخيارات وبناء علامة قوية ترتبط بالجودة والتميّز.
-        </p>
-      </section>
-
-      {/* CONTACT */}
-      <section className="section contact" id="contact">
-        <h2 className="sectionTitle">تواصل</h2>
-        <p className="prose">
-          ارسل احتياجك وسنعود لك بأقرب وقت بالخيارات المناسبة والكميات المتاحة.
-        </p>
-
-        <div className="contactCard">
-          <div className="contactRow">
-            <div className="k">واتساب</div>
-            <div className="v">+966XXXXXXXXX</div>
+            <div className="cards3" data-reveal>
+              <div className="card">
+                <h3>وساطة الاستيراد</h3>
+                <p>توفير خيارات بن أخضر متنوعة مع التركيز على الجودة والأصناف المناسبة للسوق.</p>
+              </div>
+              <div className="card">
+                <h3>الخدمات اللوجستية</h3>
+                <p>تنسيق الشحن والتسليم بأسلوب يضمن سلامة الشحنة والحفاظ على جودة البن.</p>
+              </div>
+              <div className="card">
+                <h3>استشارات مهنية</h3>
+                <p>مساندة في اختيار الأصناف وبناء قائمة توريد مناسبة حسب هدف المحمصة.</p>
+              </div>
+            </div>
           </div>
-          <div className="contactRow">
-            <div className="k">البريد</div>
-            <div className="v">info@example.com</div>
+        </section>
+
+        {/* QUALITY */}
+        <section id="quality" className="section soft">
+          <div className="wrap">
+            <div className="sectionHead" data-reveal>
+              <h2>نهجنا في الجودة</h2>
+              <p>نلتزم بوضوح المعايير وسهولة التشغيل واستمرارية التوريد.</p>
+            </div>
+
+            <div className="steps" data-reveal>
+              <div className="step">
+                <div className="dot" />
+                <div>
+                  <h3>وضوح التوريد</h3>
+                  <p>معلومات واضحة عن الشحنة وخيارات متعددة بحسب احتياج العميل.</p>
+                </div>
+              </div>
+              <div className="step">
+                <div className="dot" />
+                <div>
+                  <h3>ثبات الجودة</h3>
+                  <p>تركيز على جودة ثابتة وتغليف مناسب لضمان وصول البن بحالة ممتازة.</p>
+                </div>
+              </div>
+              <div className="step">
+                <div className="dot" />
+                <div>
+                  <h3>استمرارية التشغيل</h3>
+                  <p>سلسلة مرنة قابلة للتكرار لتغطية الاحتياج التشغيلي للمحامص.</p>
+                </div>
+              </div>
+            </div>
           </div>
+        </section>
 
-          <a className="btnGold wide" href="mailto:info@example.com">طلب تواصل</a>
-        </div>
+        {/* CONTACT */}
+        <section id="contact" className="section">
+          <div className="wrap">
+            <div className="contactBox" data-reveal>
+              <div>
+                <h2>تواصل معنا</h2>
+                <p>
+                  ارسل طلبك وسنرد عليك بأقرب وقت. (بدّل الروابط بالواتساب/الإيميل الفعلي للعميل).
+                </p>
 
-        <footer className="footer">© سلالة البن</footer>
-      </section>
+                <div className="ctaRow">
+                  <a className="btn" href="https://wa.me/966000000000" target="_blank" rel="noreferrer">
+                    واتساب
+                  </a>
+                  <a className="btn ghost" href="mailto:info@sulalatalbun.com">
+                    بريد إلكتروني
+                  </a>
+                </div>
+              </div>
+
+              <div className="contactMini">
+                <div className="miniCard">
+                  <div className="miniTitle">الموقع</div>
+                  <div className="miniText">الرياض – المملكة العربية السعودية</div>
+                </div>
+                <div className="miniCard">
+                  <div className="miniTitle">ساعات العمل</div>
+                  <div className="miniText">يوميًا 9ص – 9م</div>
+                </div>
+                <div className="miniCard">
+                  <div className="miniTitle">الرد</div>
+                  <div className="miniText">خلال 24 ساعة</div>
+                </div>
+              </div>
+            </div>
+
+            <footer className="footer">
+              <div>© {new Date().getFullYear()} سلالة البن الفاخر</div>
+            </footer>
+          </div>
+        </section>
+      </main>
     </div>
   );
 }
