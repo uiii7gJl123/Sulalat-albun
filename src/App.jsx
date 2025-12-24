@@ -233,45 +233,31 @@ export default function App() {
         </section>
 
         {/* CONTACT */}
-        <section id="contact" className="section soft">
-          <div className="wrap">
-            <div className="contactBox" data-reveal>
-              <div>
-                <h2>تواصل معنا</h2>
-                <p>ارسل طلبك وسنرد عليك بأقرب وقت. بدّل الروابط بالواتساب/الإيميل الفعلي.</p>
+<section id="contact" className="section soft">
+  <div className="wrap">
+    <div className="contactBox" data-reveal style={{ gridTemplateColumns: "1fr" }}>
+      <div>
+        <h2>تواصل معنا</h2>
 
-                <div className="ctaRow">
-                  <a className="btn" href="https://wa.me/966000000000" target="_blank" rel="noreferrer">
-                    واتساب
-                  </a>
-                  <a className="btn ghost" href="mailto:info@sulalatalbun.com">
-                    بريد إلكتروني
-                  </a>
-                </div>
-              </div>
+        <div className="ctaRow">
+          <a
+            className="btn"
+            href="https://wa.me/966000000000"
+            target="_blank"
+            rel="noreferrer"
+          >
+            واتساب
+          </a>
 
-              <div className="contactMini">
-                <div className="miniCard">
-                  <div className="miniTitle">الموقع</div>
-                  <div className="miniText">الرياض – المملكة العربية السعودية</div>
-                </div>
-                <div className="miniCard">
-                  <div className="miniTitle">ساعات العمل</div>
-                  <div className="miniText">يوميًا 9ص – 9م</div>
-                </div>
-                <div className="miniCard">
-                  <div className="miniTitle">الرد</div>
-                  <div className="miniText">خلال 24 ساعة</div>
-                </div>
-              </div>
-            </div>
-
-            <footer className="footer">
-              <div>© {new Date().getFullYear()} سلالة البن الفاخر</div>
-            </footer>
-          </div>
-        </section>
-      </main>
+          <a className="btn ghost" href="mailto:info@sulalatalbun.com">
+            بريد إلكتروني
+          </a>
+        </div>
+      </div>
     </div>
-  );
-}
+
+    <footer className="footer">
+      <div>© {new Date().getFullYear()} سلالة البن الفاخر</div>
+    </footer>
+  </div>
+</section>
