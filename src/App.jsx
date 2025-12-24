@@ -40,16 +40,18 @@ export default function App() {
                 <span> بن أخضر فاخر بمعايير واضحة</span>
               </h1>
               <p>
-                نركز على بن أخضر مختار بعناية من مزارع موثوقة، مع توثيق ومسار واضح للجودة
-                من المصدر إلى العميل.
+                نركز على بن أخضر مختار بعناية من مزارع موثوقة، مع توثيق ومسار واضح
+                للجودة من المصدر إلى العميل.
               </p>
 
               <div className="ctaRow">
-                <a className="btn" href="#invest">ملف المستثمرين</a>
+                <a className="btn" href="#invest">للمستثمرين</a>
                 <a className="btn ghost" href="#origin">استكشف السلالة</a>
               </div>
 
-              <div className="hint">اسحب باللمس/الماوس لتحريك المجسم • سكروول للتنقل</div>
+              <div className="hint">
+                اسحب باللمس/الماوس لتحريك المجسم • سكروول للتنقل
+              </div>
             </div>
 
             <div className="heroSide">
@@ -81,9 +83,18 @@ export default function App() {
             <p>مصادر مختارة بعناية، وهدفنا ثبات الجودة قبل أي شيء.</p>
           </div>
           <div className="grid3">
-            <Card title="اختيار المصدر" text="نعتمد على موردين/مزارع موثوقة وبمواصفات واضحة للبن الأخضر." />
-            <Card title="تصنيف وفرز" text="فرز بصري ومعايير ثابتة لتقليل التفاوت وتحسين الاتساق." />
-            <Card title="جاهزية للتوسع" text="نموذج توريد يسمح بتوسيع الكميات بدون التضحية بالجودة." />
+            <Card
+              title="اختيار المصدر"
+              text="نعتمد على موردين/مزارع موثوقة وبمواصفات واضحة للبن الأخضر."
+            />
+            <Card
+              title="تصنيف وفرز"
+              text="فرز بصري ومعايير ثابتة لتقليل التفاوت وتحسين الاتساق."
+            />
+            <Card
+              title="جاهزية للتوسع"
+              text="نموذج توريد يسمح بتوسيع الكميات بدون التضحية بالجودة."
+            />
           </div>
         </section>
 
@@ -131,7 +142,9 @@ export default function App() {
             </div>
             <div className="panel">
               <h3>ثبات التجربة</h3>
-              <p>هدفنا تقليل التذبذب بين الشحنات قدر الإمكان، لمنتج ثابت يعتمد عليه.</p>
+              <p>
+                هدفنا تقليل التذبذب بين الشحنات قدر الإمكان، لمنتج ثابت يعتمد عليه.
+              </p>
             </div>
           </div>
         </section>
@@ -139,15 +152,18 @@ export default function App() {
         <section className="block" id="invest">
           <div className="blockHead">
             <h2>للمستثمرين</h2>
-            <p>قسم مختصر وواضح. تقدر تربطه لاحقًا بملف PDF/Doc أو صفحة مفصلة.</p>
+            <p>
+              قسم مخصص لعرض الرؤية الاستثمارية، نموذج التوريد، وآفاق النمو بطريقة
+              واضحة ومهنية.
+            </p>
           </div>
 
           <div className="investBox">
             <div>
               <h3>فرصة نمو</h3>
               <p>
-                نموذج يعتمد على توريد بن أخضر بمعايير ثابتة وشفافية، مع قابلية للتوسع
-                في السوق المستهدف.
+                نموذج يعتمد على توريد بن أخضر بمعايير ثابتة وشفافية، مع قابلية
+                للتوسع في السوق المستهدف.
               </p>
               <ul>
                 <li>قيمة: جودة + توريد + وضوح</li>
@@ -157,9 +173,10 @@ export default function App() {
             </div>
 
             <div className="investCTA">
-              <div className="badge">الخطوة التالية</div>
+              <div className="badge">التواصل الاستثماري</div>
               <p className="small">
-                إذا تبغى، أجهّز لك زر تنزيل/عرض “ملف المستثمرين” داخل الموقع.
+                نرحب بالتواصل مع المستثمرين والجهات المهتمة لمناقشة فرص الشراكة
+                والتوسع.
               </p>
               <a className="btn" href="#contact">طلب تواصل</a>
             </div>
@@ -189,7 +206,9 @@ export default function App() {
 
           <footer className="footer">
             <div>© سلاسة البن</div>
-            <div className="small">Credits: 3D model (CC BY) – ضع نص Credits هنا من Sketchfab</div>
+            <div className="small">
+              Credits: 3D model (CC BY) – ضع نص Credits هنا من Sketchfab
+            </div>
           </footer>
         </section>
       </main>
