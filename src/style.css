@@ -57,20 +57,20 @@ body{
 .topbarInner{
   max-width:1180px;
   margin:0 auto;
-  padding: 6px 12px; /* ✅ تصغير البار */
+  padding: 2px 10px;   /* ✅ أصغر بكثير */
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap:8px; /* ✅ تقليل المسافة */
+  gap:6px;             /* ✅ تقليل المسافة */
 }
 .brand{
   display:flex;
   align-items:center;
   text-decoration:none;
-  line-height:0; /* ✅ يقلل ارتفاع الصف */
+  line-height:0;
 }
 .brandLogo{
-  width:92px; /* +10% تقريباً من 84 */
+  width:86px;          /* ✅ تقليل بسيط بدون تغيير زر الثلاث خطوط */
   height:auto;
   display:block;
   filter: drop-shadow(0 10px 18px rgba(0,0,0,.55));
@@ -83,7 +83,7 @@ body{
 .topbarActions{
   display:flex;
   align-items:center;
-  gap:10px;
+  gap:8px;            /* ✅ أقل */
 }
 
 /* Theme button (no text) */
@@ -139,8 +139,6 @@ body{
   justify-content:center;
   gap:4px;
   cursor:pointer;
-
-  /* ✅ الخطوط فوق بعض */
   flex-direction:column;
 }
 :root[data-theme="light"] .menuBtn{
@@ -182,7 +180,7 @@ body{
 }
 
 /* ====== Page ====== */
-.page{ padding-top:64px; } /* ✅ كان 78px */
+.page{ padding-top:54px; } /* ✅ أصغر لأن البار صار أنحف */
 .wrap{
   max-width:1180px;
   margin:0 auto;
@@ -526,9 +524,9 @@ h1 span{
   .cards3{ grid-template-columns:1fr; }
   .contactBox{ grid-template-columns:1fr; }
 
-  .brandLogo{ width:102px; } /* +10% تقريباً من 92 */
-  .page{ padding-top:62px; } /* ✅ كان 74px */
-  .topbarInner{ padding: 6px 10px; gap:8px; } /* ✅ تصغير البار للموبايل */
+  .brandLogo{ width:92px; } /* ✅ أصغر على الموبايل */
+  .page{ padding-top:52px; } /* ✅ أصغر */
+  .topbarInner{ padding: 2px 8px; gap:6px; } /* ✅ أنحف للموبايل */
 
   .mediaFrame{ height: 260px; }
   .mediaFrame.tall{ height: 300px; }
