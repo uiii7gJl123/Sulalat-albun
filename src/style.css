@@ -57,16 +57,17 @@ body{
 .topbarInner{
   max-width:1180px;
   margin:0 auto;
-  padding: 12px 16px;
+  padding: 6px 12px; /* ✅ تصغير البار */
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap:12px;
+  gap:8px; /* ✅ تقليل المسافة */
 }
 .brand{
   display:flex;
   align-items:center;
   text-decoration:none;
+  line-height:0; /* ✅ يقلل ارتفاع الصف */
 }
 .brandLogo{
   width:92px; /* +10% تقريباً من 84 */
@@ -181,7 +182,7 @@ body{
 }
 
 /* ====== Page ====== */
-.page{ padding-top:78px; }
+.page{ padding-top:64px; } /* ✅ كان 78px */
 .wrap{
   max-width:1180px;
   margin:0 auto;
@@ -526,7 +527,8 @@ h1 span{
   .contactBox{ grid-template-columns:1fr; }
 
   .brandLogo{ width:102px; } /* +10% تقريباً من 92 */
-  .page{ padding-top:74px; }
+  .page{ padding-top:62px; } /* ✅ كان 74px */
+  .topbarInner{ padding: 6px 10px; gap:8px; } /* ✅ تصغير البار للموبايل */
 
   .mediaFrame{ height: 260px; }
   .mediaFrame.tall{ height: 300px; }
