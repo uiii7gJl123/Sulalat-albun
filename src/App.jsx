@@ -35,7 +35,7 @@ export default function App() {
 
   const logoSrc = useMemo(() => (theme === "light" ? LOGO_LIGHT : LOGO_DARK), [theme]);
 
-  // صور موزعة على الأقسام (عدّل الأرقام حسب صورك)
+  // صور موزعة على الأقسام
   const storyImages = useMemo(
     () => ({
       hero: [1, 2, 3, 4],
@@ -75,10 +75,18 @@ export default function App() {
           </div>
 
           <nav className={`nav ${menuOpen ? "open" : ""}`}>
-            <a href="#about" onClick={() => setMenuOpen(false)}>نبذة</a>
-            <a href="#services" onClick={() => setMenuOpen(false)}>خدماتنا</a>
-            <a href="#quality" onClick={() => setMenuOpen(false)}>الجودة</a>
-            <a href="#contact" onClick={() => setMenuOpen(false)}>تواصل</a>
+            <a href="#about" onClick={() => setMenuOpen(false)}>
+              نبذة
+            </a>
+            <a href="#services" onClick={() => setMenuOpen(false)}>
+              خدماتنا
+            </a>
+            <a href="#quality" onClick={() => setMenuOpen(false)}>
+              الجودة
+            </a>
+            <a href="#contact" onClick={() => setMenuOpen(false)}>
+              تواصل
+            </a>
           </nav>
         </div>
       </header>
@@ -95,8 +103,12 @@ export default function App() {
               </h1>
 
               <div className="ctaRow">
-                <a className="btn" href="#contact">تواصل معنا</a>
-                <a className="btn ghost" href="#services">استعرض الخدمات</a>
+                <a className="btn" href="#contact">
+                  تواصل معنا
+                </a>
+                <a className="btn ghost" href="#services">
+                  استعرض الخدمات
+                </a>
               </div>
 
               <div className="miniNotes">
@@ -115,15 +127,15 @@ export default function App() {
           </div>
         </section>
 
-        {/* ABOUT (صورة مرتبطة بالنص) */}
+        {/* ABOUT */}
         <section id="about" className="section">
           <div className="wrap split">
             <div className="splitText" data-reveal>
               <div className="sectionHead">
                 <h2>نبذة عنا</h2>
                 <p>
-                  سلالة البن علامة متخصصة في توريد البن الأخضر، تركّز على ثبات الجودة ووضوح سلسلة التوريد
-                  وتعدد الخيارات بما يخدم محامص ومتاجر القهوة المختصة.
+                  سلالة البن علامة متخصصة في توريد البن الأخضر، تركّز على ثبات الجودة ووضوح سلسلة التوريد وتعدد
+                  الخيارات بما يخدم محامص ومتاجر القهوة المختصة.
                 </p>
               </div>
 
@@ -159,7 +171,7 @@ export default function App() {
           </div>
         </section>
 
-        {/* SERVICES (صورة مرتبطة بالنص) */}
+        {/* SERVICES */}
         <section id="services" className="section soft">
           <div className="wrap split reverse">
             <div className="splitText" data-reveal>
@@ -191,7 +203,7 @@ export default function App() {
           </div>
         </section>
 
-        {/* QUALITY (صورة مرتبطة بالنص) */}
+        {/* QUALITY */}
         <section id="quality" className="section">
           <div className="wrap split">
             <div className="splitText" data-reveal>
@@ -233,31 +245,30 @@ export default function App() {
         </section>
 
         {/* CONTACT */}
-<section id="contact" className="section soft">
-  <div className="wrap">
-    <div className="contactBox" data-reveal style={{ gridTemplateColumns: "1fr" }}>
-      <div>
-        <h2>تواصل معنا</h2>
+        <section id="contact" className="section soft">
+          <div className="wrap">
+            <div className="contactBox" data-reveal style={{ gridTemplateColumns: "1fr" }}>
+              <div>
+                <h2>تواصل معنا</h2>
 
-        <div className="ctaRow">
-          <a
-            className="btn"
-            href="https://wa.me/966000000000"
-            target="_blank"
-            rel="noreferrer"
-          >
-            واتساب
-          </a>
+                <div className="ctaRow">
+                  <a className="btn" href="https://wa.me/966000000000" target="_blank" rel="noreferrer">
+                    واتساب
+                  </a>
 
-          <a className="btn ghost" href="mailto:info@sulalatalbun.com">
-            بريد إلكتروني
-          </a>
-        </div>
-      </div>
+                  <a className="btn ghost" href="mailto:info@sulalatalbun.com">
+                    بريد إلكتروني
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <footer className="footer">
+              <div>© {new Date().getFullYear()} سلالة البن الفاخر</div>
+            </footer>
+          </div>
+        </section>
+      </main>
     </div>
-
-    <footer className="footer">
-      <div>© {new Date().getFullYear()} سلالة البن الفاخر</div>
-    </footer>
-  </div>
-</section>
+  );
+}
