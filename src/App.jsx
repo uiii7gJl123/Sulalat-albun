@@ -1,206 +1,277 @@
-import { useEffect, useMemo, useState } from "react";
-import "./style.css";
+import React, { useEffect, useMemo, useState } from "react";
 
-// ✅ الشعارات داخل: public/assets/images
-const LOGO_DARK = "/assets/images/logo-dark.png";   // نص أبيض
-const LOGO_LIGHT = "/assets/images/logo-light.png"; // نص أسود
+const IMG = (n) => `/assets/images/farm-${n}.jpg`;
+
+// شعارات مختلفة حسب الثيم
+const LOGO_DARK = `/assets/images/logo-dark.png`;
+const LOGO_LIGHT = `/assets/images/logo-light.png`;
+
+function useReveal() {
+  useEffect(() => {
+    const els = Array.from(document.querySelectorAll("[data-reveal]"));
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) e.target.classList.add("is-in");
+        }
+      },
+      { threshold: 0.12 }
+    );
+    els.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, []);
+}
 
 export default function App() {
+  useReveal();
+  const [menuOpen, setMenuOpen] = useState(false);
+
   const [theme, setTheme] = useState(() => localStorage.getItem("theme") || "dark");
-  const isDark = theme === "dark";
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
     localStorage.setItem("theme", theme);
   }, [theme]);
 
-  const logoSrc = useMemo(() => (isDark ? LOGO_DARK : LOGO_LIGHT), [isDark]);
+  const logoSrc = useMemo(() => (theme === "light" ? LOGO_LIGHT : LOGO_DARK), [theme]);
 
-  const toggleTheme = () => setTheme((t) => (t === "dark" ? "light" : "dark"));
-
-  // ✅ صور المزرعة: ضعها داخل public/assets/images بهذه الأسماء
-  const farmShots = [
-    "/assets/images/farm-1.jpg",
-    "/assets/images/farm-2.jpg",
-    "/assets/images/farm-3.jpg",
-    "/assets/images/farm-4.jpg",
-    "/assets/images/farm-5.jpg",
-    "/assets/images/farm-6.jpg",
-  ];
+  // صور موزعة على الأقسام (عدّل الأرقام حسب صورك)
+  const storyImages = useMemo(
+    () => ({
+      hero: [1, 2, 3, 4],
+      about: 5,
+      services: 6,
+      quality: 2,
+    }),
+    []
+  );
 
   return (
-    <>
+    <div className="app">
       <header className="topbar">
-        <button className="menuBtn" aria-label="القائمة">
-          <span className="menuLine" />
-          <span className="menuLine" />
-          <span className="menuLine" />
-        </button>
+        <div className="topbarInner">
+          <a className="brand" href="#home" onClick={() => setMenuOpen(false)}>
+            <img className="brandLogo" src={logoSrc} alt="شعار سلالة البن الفاخر" />
+          </a>
 
-        <div className="topbarRight">
-          <button className="themeBtn" onClick={toggleTheme} aria-label="تغيير الثيم">
-            {isDark ? "فاتح" : "داكن"}
-          </button>
+          <div className="topbarActions">
+            <button
+              className="themeBtn"
+              aria-label="تبديل الثيم"
+              onClick={() => setTheme((t) => (t === "dark" ? "light" : "dark"))}
+            >
+              <span className="themeIcon" />
+            </button>
 
-          <img
-            className="topLogo"
-            src={logoSrc}
-            alt="سلالة البن الفاخر"
-            onError={(e) => {
-              // fallback لو واحد من الملفين اسمه/مساره غلط
-              e.currentTarget.src = isDark ? LOGO_LIGHT : LOGO_DARK;
-            }}
-          />
+            <button
+              className="menuBtn"
+              aria-label="القائمة"
+              onClick={() => setMenuOpen((v) => !v)}
+            >
+              <span />
+              <span />
+              <span />
+            </button>
+          </div>
+
+          <nav className={`nav ${menuOpen ? "open" : ""}`}>
+            <a href="#about" onClick={() => setMenuOpen(false)}>نبذة</a>
+            <a href="#services" onClick={() => setMenuOpen(false)}>خدماتنا</a>
+            <a href="#quality" onClick={() => setMenuOpen(false)}>الجودة</a>
+            <a href="#contact" onClick={() => setMenuOpen(false)}>تواصل</a>
+          </nav>
         </div>
       </header>
 
-      <main className="page">
+      <main id="home" className="page">
         {/* HERO */}
         <section className="hero">
-          <div className="heroGrid">
-            <div>
-              <span className="pill">توريد بن أخضر فاخر • جودة • التزام</span>
+          <div className="wrap heroGrid">
+            <div className="heroText" data-reveal>
+              <div className="kicker">بن أخضر فاخر • سلسلة توريد موثوقة</div>
               <h1>
                 سلالة البن الفاخر
-                <span>نختار المصدر بعناية، ونوصل لك بن أخضر بمعايير ثابتة.</span>
+                <span>توريد بن أخضر بجودة ثابتة وخيارات متنوعة تلائم مختلف الأذواق.</span>
               </h1>
 
               <div className="ctaRow">
-                <a className="btn" href="#contact">طلب تواصل</a>
+                <a className="btn" href="#contact">تواصل معنا</a>
                 <a className="btn ghost" href="#services">استعرض الخدمات</a>
               </div>
 
-              <div className="hint">تصفح الأقسام بالتمرير • تصميم خفيف على الجوال</div>
+              <div className="miniNotes">
+                <div className="pill">تغليف آمن</div>
+                <div className="pill">توريد واضح</div>
+                <div className="pill">استمرارية</div>
+              </div>
             </div>
 
-            <div className="heroSide">
-              <div className="panel">
-                <h3>ما الذي نقدمه؟</h3>
+            <div className="heroMosaic" data-reveal>
+              <div className="tile t1" style={{ backgroundImage: `url(${IMG(storyImages.hero[0])})` }} />
+              <div className="tile t2" style={{ backgroundImage: `url(${IMG(storyImages.hero[1])})` }} />
+              <div className="tile t3" style={{ backgroundImage: `url(${IMG(storyImages.hero[2])})` }} />
+              <div className="tile t4" style={{ backgroundImage: `url(${IMG(storyImages.hero[3])})` }} />
+            </div>
+          </div>
+        </section>
+
+        {/* ABOUT (صورة مرتبطة بالنص) */}
+        <section id="about" className="section">
+          <div className="wrap split">
+            <div className="splitText" data-reveal>
+              <div className="sectionHead">
+                <h2>نبذة عنا</h2>
                 <p>
-                  توريد بن أخضر للمحامص ومتاجر القهوة المختصة مع متابعة واضحة للمواصفات
-                  وتنسيق عمليات التوريد حسب احتياجك.
+                  سلالة البن علامة متخصصة في توريد البن الأخضر، تركّز على ثبات الجودة ووضوح سلسلة التوريد
+                  وتعدد الخيارات بما يخدم محامص ومتاجر القهوة المختصة.
                 </p>
               </div>
 
-              <div className="panel">
-                <h3>لماذا نحن؟</h3>
-                <ul className="bullets">
-                  <li>اختيارات مدروسة</li>
-                  <li>تواصل سريع وواضح</li>
-                  <li>تجهيز للتوريد والتسليم</li>
-                </ul>
+              <div className="bullets">
+                <div className="bullet">
+                  <span className="bDot" />
+                  <div>
+                    <div className="bTitle">وضوح الخيارات</div>
+                    <div className="bText">أصناف مناسبة لأهداف التحميص ومختلف الأذواق.</div>
+                  </div>
+                </div>
+                <div className="bullet">
+                  <span className="bDot" />
+                  <div>
+                    <div className="bTitle">ثبات الجودة</div>
+                    <div className="bText">تركيز على الاستمرارية من الشحنة إلى الشحنة.</div>
+                  </div>
+                </div>
+                <div className="bullet">
+                  <span className="bDot" />
+                  <div>
+                    <div className="bTitle">تجربة عملية</div>
+                    <div className="bText">آلية تواصل وتنفيذ واضحة وسريعة.</div>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
 
-          {/* صور تحت الهيرو */}
-          <div className="filmstrip">
-            {farmShots.slice(0, 3).map((src, i) => (
-              <div key={i} className="shot" style={{ backgroundImage: `url(${src})` }} />
-            ))}
-          </div>
-        </section>
-
-        {/* ABOUT */}
-        <section id="about" className="block">
-          <div className="blockHead">
-            <h2>نبذة مختصرة</h2>
-            <p>
-              سلالة البن الفاخر علامة متخصصة في توريد البن الأخضر، هدفنا تقديم خيارات مستقرة
-              تناسب احتياجات المحامص ومتاجر القهوة المختصة.
-            </p>
-          </div>
-
-          <div className="grid2">
-            <div className="card">
-              <h3>تركيز على الجودة</h3>
-              <p>نختار محاصيل مناسبة ومواصفات واضحة لضمان تجربة متسقة.</p>
-            </div>
-
-            <div className="card">
-              <h3>مرونة في التوريد</h3>
-              <p>تنسيق الكميات والتسليم بما يتوافق مع احتياج العميل وجدولة العمل.</p>
+            <div className="splitMedia" data-reveal>
+              <div className="mediaFrame" style={{ backgroundImage: `url(${IMG(storyImages.about)})` }} />
+              <div className="mediaCaption">لقطات من المصدر والعناية بالمحصول</div>
             </div>
           </div>
         </section>
 
-        {/* SERVICES */}
-        <section id="services" className="block">
-          <div className="blockHead">
-            <h2>خدماتنا المتكاملة</h2>
-            <p>مجموعة خدمات شاملة تلبي احتياجات متاجر القهوة والمحمصة.</p>
-          </div>
-
-          <div className="grid3">
-            <div className="card iconCard">
-              <div className="iconBubble">👁️</div>
-              <h3>متابعة واضحة</h3>
-              <p>مشاركة التفاصيل الأساسية والمواصفات المطلوبة بشكل منظم.</p>
-            </div>
-
-            <div className="card iconCard">
-              <div className="iconBubble">📦</div>
-              <h3>توريد بن أخضر</h3>
-              <p>توفير خيارات مناسبة بمستوى جودة ثابت حسب احتياج العميل.</p>
-            </div>
-
-            <div className="card iconCard">
-              <div className="iconBubble">🚚</div>
-              <h3>تنسيق التسليم</h3>
-              <p>تنسيق عمليات التسليم والجدولة لضمان وصول الطلبات بسلاسة.</p>
-            </div>
-          </div>
-        </section>
-
-        {/* GALLERY */}
-        <section className="block">
-          <div className="blockHead">
-            <h2>صور من المصدر</h2>
-            <p>لمحات من المزارع ومراحل المحصول.</p>
-          </div>
-
-          <div className="masonry">
-            {farmShots.map((src, i) => (
-              <div key={i} className="mCard">
-                <div className="mImg" style={{ backgroundImage: `url(${src})` }} />
+        {/* SERVICES (صورة مرتبطة بالنص) */}
+        <section id="services" className="section soft">
+          <div className="wrap split reverse">
+            <div className="splitText" data-reveal>
+              <div className="sectionHead">
+                <h2>خدماتنا المتكاملة</h2>
+                <p>مجموعة خدمات تلبي احتياج محامص ومتاجر القهوة المختصة بشكل عملي وواضح.</p>
               </div>
-            ))}
+
+              <div className="cards3 compact">
+                <div className="card">
+                  <h3>وساطة الاستيراد</h3>
+                  <p>توفير خيارات بن أخضر متنوعة مع التركيز على الأصناف المناسبة للسوق.</p>
+                </div>
+                <div className="card">
+                  <h3>الخدمات اللوجستية</h3>
+                  <p>تنسيق الشحن والتسليم بما يحافظ على جودة البن وسلامة الشحنة.</p>
+                </div>
+                <div className="card">
+                  <h3>استشارات مهنية</h3>
+                  <p>مساندة في اختيار الأصناف وبناء قائمة توريد مناسبة حسب هدف المحمصة.</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="splitMedia" data-reveal>
+              <div className="mediaFrame tall" style={{ backgroundImage: `url(${IMG(storyImages.services)})` }} />
+              <div className="mediaCaption">حلول تنفيذية تدعم التشغيل اليومي للمحمصة</div>
+            </div>
+          </div>
+        </section>
+
+        {/* QUALITY (صورة مرتبطة بالنص) */}
+        <section id="quality" className="section">
+          <div className="wrap split">
+            <div className="splitText" data-reveal>
+              <div className="sectionHead">
+                <h2>نهجنا في الجودة</h2>
+                <p>نلتزم بوضوح المعايير وسهولة التشغيل واستمرارية التوريد.</p>
+              </div>
+
+              <div className="steps" data-reveal>
+                <div className="step">
+                  <div className="dot" />
+                  <div>
+                    <h3>وضوح التوريد</h3>
+                    <p>معلومات واضحة عن الشحنة وخيارات متعددة بحسب احتياج العميل.</p>
+                  </div>
+                </div>
+                <div className="step">
+                  <div className="dot" />
+                  <div>
+                    <h3>ثبات الجودة</h3>
+                    <p>تغليف مناسب وضبط جودة لتصل الشحنة بحالة ممتازة.</p>
+                  </div>
+                </div>
+                <div className="step">
+                  <div className="dot" />
+                  <div>
+                    <h3>استمرارية التشغيل</h3>
+                    <p>سلسلة مرنة قابلة للتكرار لتغطية الاحتياج التشغيلي للمحامص.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="splitMedia" data-reveal>
+              <div className="mediaFrame" style={{ backgroundImage: `url(${IMG(storyImages.quality)})` }} />
+              <div className="mediaCaption">معايير ثابتة • تشغيل أسهل • نتائج أوضح</div>
+            </div>
           </div>
         </section>
 
         {/* CONTACT */}
-        <section id="contact" className="block">
-          <div className="blockHead">
-            <h2>تواصل معنا</h2>
-            <p>اترك بياناتك وسنتواصل معك.</p>
-          </div>
+        <section id="contact" className="section soft">
+          <div className="wrap">
+            <div className="contactBox" data-reveal>
+              <div>
+                <h2>تواصل معنا</h2>
+                <p>ارسل طلبك وسنرد عليك بأقرب وقت. بدّل الروابط بالواتساب/الإيميل الفعلي.</p>
 
-          <div className="contactRow">
-            <div className="card">
-              <h3>واتساب</h3>
-              <p className="small">ضع رابط الواتساب هنا</p>
-              <a className="btn" href="#">فتح واتساب</a>
+                <div className="ctaRow">
+                  <a className="btn" href="https://wa.me/966000000000" target="_blank" rel="noreferrer">
+                    واتساب
+                  </a>
+                  <a className="btn ghost" href="mailto:info@sulalatalbun.com">
+                    بريد إلكتروني
+                  </a>
+                </div>
+              </div>
+
+              <div className="contactMini">
+                <div className="miniCard">
+                  <div className="miniTitle">الموقع</div>
+                  <div className="miniText">الرياض – المملكة العربية السعودية</div>
+                </div>
+                <div className="miniCard">
+                  <div className="miniTitle">ساعات العمل</div>
+                  <div className="miniText">يوميًا 9ص – 9م</div>
+                </div>
+                <div className="miniCard">
+                  <div className="miniTitle">الرد</div>
+                  <div className="miniText">خلال 24 ساعة</div>
+                </div>
+              </div>
             </div>
 
-            <div className="card">
-              <h3>اتصال</h3>
-              <p className="small">ضع رقم الاتصال هنا</p>
-              <a className="btn ghost" href="#">اتصال</a>
-            </div>
-
-            <div className="card">
-              <h3>بريد</h3>
-              <p className="small">ضع البريد هنا</p>
-              <a className="btn ghost" href="#">إرسال بريد</a>
-            </div>
-          </div>
-
-          <div className="footer">
-            <span className="small">© {new Date().getFullYear()} سلالة البن الفاخر</span>
-            <span className="small">تصميم متوافق مع الجوال</span>
+            <footer className="footer">
+              <div>© {new Date().getFullYear()} سلالة البن الفاخر</div>
+            </footer>
           </div>
         </section>
       </main>
-    </>
+    </div>
   );
 }
