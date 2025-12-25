@@ -58,11 +58,13 @@ body{
 /* ====== Topbar ====== */
 .topbar{
   position:fixed;
-  top:0; left:0; right:0;
+  top:0;
+  left:0;
+  right:0;
   z-index:10;
-  background: rgba(7,8,7,.72);
+  background: rgba(7,8,7,.65);
   border-bottom: 1px solid var(--line);
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(10px);
 }
 :root[data-theme="light"] .topbar{
   background: rgba(244,239,230,.75);
@@ -70,11 +72,11 @@ body{
 .topbarInner{
   max-width:1180px;
   margin:0 auto;
-  padding: 6px 14px;   /* ⬅️ صغرنا الارتفاع */
+  padding: 4px 12px;   /* ⬅️ نحيف جدًا */
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap:8px;
+  gap:6px;
 }
 .brand{
   display:flex;
