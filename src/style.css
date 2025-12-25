@@ -1,3 +1,4 @@
+/* ================== VARIABLES ================== */
 :root{
   --bg:#070807;
   --panel: rgba(15,16,14,.72);
@@ -10,7 +11,7 @@
   --shadow: 0 18px 45px rgba(0,0,0,.35);
 }
 
-/* LIGHT THEME */
+/* LIGHT */
 :root[data-theme="light"]{
   --bg:#f4efe6;
   --panel: rgba(255,255,255,.78);
@@ -29,510 +30,134 @@ html,body{ height:100%; }
 body{
   margin:0;
   font-family:"Cairo", system-ui, -apple-system, Segoe UI, Roboto, Arial;
-
-  /* ✅ DARK: خلفية متناسقة بدون تقطيع */
   background-color: var(--bg);
   background-image:
     radial-gradient(900px 700px at 50% 10%, rgba(149,173,114,.14), rgba(0,0,0,0)),
     radial-gradient(900px 700px at 80% 85%, rgba(202,166,106,.10), rgba(0,0,0,0)),
     linear-gradient(180deg, rgba(0,0,0,.55), rgba(0,0,0,.85));
-  background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: cover;
-
   color: var(--ink);
   overflow-x:hidden;
 }
 
-/* ✅ LIGHT: كما هو */
-:root[data-theme="light"] body{
-  background:
-    radial-gradient(70% 70% at 50% 18%, rgba(149,173,114,.10), rgba(244,239,230,.92)),
-    radial-gradient(55% 55% at 75% 85%, rgba(202,166,106,.10), rgba(244,239,230,0));
-  background-color: var(--bg);
-  background-repeat:no-repeat;
-  background-attachment: fixed;
-  background-size: cover;
-}
-
-/* ====== Topbar ====== */
-.topbar{
-  position:fixed;
-  top:0; left:0; right:0;
-  z-index:10;
-  background: rgba(7,8,7,.72);
-  border-bottom: 1px solid var(--line);
-  backdrop-filter: blur(12px);
-}
-:root[data-theme="light"] .topbar{
-  background: rgba(244,239,230,.75);
-}
-.topbarInner{
-  max-width:1180px;
-  margin:0 auto;
-  padding: 12px 16px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-}
-.brand{
-  display:flex;
-  align-items:center;
-  text-decoration:none;
-}
-.brandLogo{
-  width:92px;
-  height:auto;
-  display:block;
-  filter: drop-shadow(0 10px 18px rgba(0,0,0,.55));
-}
-:root[data-theme="light"] .brandLogo{
-  filter: drop-shadow(0 10px 18px rgba(0,0,0,.18));
-}
-
-/* Right cluster */
-.topbarActions{
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-
-/* Theme button (no text) */
-.themeBtn{
-  width:44px; height:44px;
-  border:1px solid var(--line);
-  background: rgba(255,255,255,.04);
-  border-radius:14px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  cursor:pointer;
-}
-:root[data-theme="light"] .themeBtn{
-  background: rgba(255,255,255,.65);
-}
-.themeIcon{
-  width:18px; height:18px;
-  border-radius:999px;
-  border:2px solid rgba(244,244,244,.85);
-  position:relative;
-}
-:root[data-theme="light"] .themeIcon{
-  border-color: rgba(20,20,20,.70);
-}
-:root:not([data-theme="light"]) .themeIcon::after{
-  content:"";
-  position:absolute;
-  width:10px; height:10px;
-  border-radius:999px;
-  background: rgba(244,244,244,.85);
-  top:50%; left:50%;
-  transform: translate(-25%,-50%);
-}
-:root[data-theme="light"] .themeIcon::after{
-  content:"";
-  position:absolute;
-  width:8px; height:8px;
-  border-radius:999px;
-  background: rgba(20,20,20,.70);
-  top:50%; left:50%;
-  transform: translate(-50%,-50%);
-}
-
-/* Menu button (mobile) */
-.menuBtn{
-  width:44px; height:44px;
-  border:1px solid var(--line);
-  background: rgba(255,255,255,.04);
-  border-radius:14px;
-  display:none;
-  align-items:center;
-  justify-content:center;
-  gap:4px;
-  cursor:pointer;
-  flex-direction:column;
-}
-:root[data-theme="light"] .menuBtn{
-  background: rgba(255,255,255,.65);
-}
-.menuBtn span{
-  display:block;
-  width:18px; height:2px;
-  background:rgba(244,244,244,.85);
-  border-radius:2px;
-}
-:root[data-theme="light"] .menuBtn span{
-  background: rgba(20,20,20,.70);
-}
-
-/* Nav */
-.nav{
-  display:flex;
-  gap:10px;
-  align-items:center;
-}
-.nav a{
-  text-decoration:none;
-  color:rgba(244,244,244,.82);
-  font-weight:800;
-  padding:10px 12px;
-  border-radius:14px;
-  border:1px solid transparent;
-}
-:root[data-theme="light"] .nav a{
-  color: rgba(20,20,20,.78);
-}
-.nav a:hover{
-  background: rgba(149,173,114,.10);
-  border-color: rgba(255,255,255,.10);
-}
-:root[data-theme="light"] .nav a:hover{
-  border-color: rgba(10,10,10,.10);
-}
-
-/* ====== Page ====== */
-.page{ padding-top:78px; }
-.wrap{
-  max-width:1180px;
-  margin:0 auto;
-  padding:0 16px;
-}
-
-/* ====== Reveal (أوضح) ====== */
+/* ================== REVEAL (أوضح) ================== */
 [data-reveal]{
-  opacity: 0;
-  transform: translateY(40px) scale(0.98);
+  opacity:0;
+  transform: translateY(50px) scale(.96);
   transition:
-    opacity .8s cubic-bezier(.22,.61,.36,1),
-    transform .8s cubic-bezier(.22,.61,.36,1);
+    opacity .9s cubic-bezier(.22,.61,.36,1),
+    transform .9s cubic-bezier(.22,.61,.36,1);
   will-change: transform, opacity;
 }
 [data-reveal].is-in{
-  opacity: 1;
+  opacity:1;
   transform: translateY(0) scale(1);
 }
-/* خروج خفيف أثناء التمرير */
 [data-reveal].is-out{
-  opacity: 0;
-  transform: translateY(-30px) scale(0.99);
+  opacity:0;
+  transform: translateY(-40px) scale(.97);
 }
 
-/* ====== Hero ====== */
-.hero{ padding: 28px 0 24px; }
-.heroGrid{
-  display:grid;
-  grid-template-columns: 1.15fr .85fr;
-  gap:18px;
-  align-items:center;
-}
-.heroText{
-  background: linear-gradient(180deg, rgba(15,16,14,.78), rgba(15,16,14,.58));
-  border: 1px solid var(--line);
-  border-radius: 26px;
-  padding: 22px;
-  box-shadow: var(--shadow);
-}
-:root[data-theme="light"] .heroText{
-  background: linear-gradient(180deg, rgba(255,255,255,.86), rgba(255,255,255,.70));
-}
-.kicker{
-  display:inline-flex;
-  gap:10px;
-  align-items:center;
-  padding:8px 12px;
-  border-radius:999px;
-  background: rgba(149,173,114,.14);
-  border:1px solid rgba(149,173,114,.22);
-  color: rgba(244,244,244,.86);
-  font-weight:900;
-  font-size:.95rem;
-}
-:root[data-theme="light"] .kicker{ color: rgba(20,20,20,.80); }
+/* ================== IMAGE ANIMATIONS ================== */
 
-h1{
-  margin:14px 0 8px;
-  font-size: clamp(1.9rem, 5.2vw, 3.2rem);
-  line-height: 1.15;
-  letter-spacing:-.01em;
-}
-h1 span{
-  display:block;
-  margin-top:10px;
-  color: var(--muted);
-  font-weight:700;
-  font-size: clamp(1rem, 2.2vw, 1.15rem);
-}
-.ctaRow{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  margin-top:14px;
-}
-.btn{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  padding: 12px 18px;
-  border-radius: 999px;
-  text-decoration:none;
-  font-weight:900;
-  border: 1px solid rgba(255,255,255,.10);
-  background: linear-gradient(135deg, var(--accent), var(--gold));
-  color:#0b0b0b;
-}
-.btn.ghost{
-  background: rgba(255,255,255,.06);
-  color: rgba(244,244,244,.86);
-  border: 1px solid var(--line);
-}
-:root[data-theme="light"] .btn.ghost{
-  background: rgba(255,255,255,.70);
-  color: rgba(20,20,20,.78);
-}
-.btn:hover{ filter:brightness(1.03); }
-
-.miniNotes{
-  display:flex;
-  gap:8px;
-  flex-wrap:wrap;
-  margin-top:14px;
-}
-.pill{
-  background: rgba(255,255,255,.05);
-  border:1px solid var(--line);
-  padding:8px 10px;
-  border-radius:999px;
-  font-weight:900;
-  color: rgba(244,244,244,.82);
-  font-size:.92rem;
-}
-:root[data-theme="light"] .pill{
-  background: rgba(255,255,255,.70);
-  color: rgba(20,20,20,.78);
+/* كل الصور */
+.tile,
+.mediaFrame{
+  position:relative;
+  overflow:hidden;
+  transform: translateZ(0);
+  transition:
+    transform .6s cubic-bezier(.22,.61,.36,1),
+    box-shadow .6s ease;
 }
 
-/* Mosaic images */
+/* دخول أوضح */
+.tile[data-reveal],
+.mediaFrame[data-reveal]{
+  transform: translateY(60px) scale(.94);
+}
+.tile[data-reveal].is-in,
+.mediaFrame[data-reveal].is-in{
+  transform: translateY(0) scale(1);
+}
+
+/* Hover – حركة خفيفة */
+@media (hover:hover){
+  .tile:hover,
+  .mediaFrame:hover{
+    transform: scale(1.04) translateY(-6px);
+    box-shadow: 0 30px 70px rgba(0,0,0,.45);
+  }
+}
+
+/* طبقة لمعان خفيفة */
+.tile::after,
+.mediaFrame::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(
+      120deg,
+      rgba(255,255,255,0) 40%,
+      rgba(255,255,255,.08) 50%,
+      rgba(255,255,255,0) 60%
+    );
+  opacity:0;
+  transition: opacity .6s ease;
+  pointer-events:none;
+}
+
+@media (hover:hover){
+  .tile:hover::after,
+  .mediaFrame:hover::after{
+    opacity:1;
+  }
+}
+
+/* ================== HERO MOSAIC ================== */
 .heroMosaic{
   display:grid;
   grid-template-columns: 1fr 1fr;
   gap:12px;
 }
 .tile{
-  border-radius: 24px;
-  border: 1px solid var(--line);
+  border-radius:24px;
+  border:1px solid var(--line);
   box-shadow: var(--shadow);
-  background-size: cover;
+  background-size:cover;
   background-position:center;
-  min-height: 150px;
-  filter: saturate(1.02) contrast(1.02);
+  min-height:150px;
 }
+
+/* دوران بسيط يعطي حياة */
 .t1{ transform: rotate(-2deg); }
 .t2{ transform: rotate(2deg); }
-.t3{ transform: rotate(2deg); }
-.t4{ transform: rotate(-2deg); }
+.t3{ transform: rotate(1.5deg); }
+.t4{ transform: rotate(-1.5deg); }
 
-/* ====== Sections ====== */
-.section{ padding: 46px 0; }
-.section.soft{
-  background: rgba(255,255,255,.03);
-  border-top: 1px solid rgba(255,255,255,.06);
-  border-bottom: 1px solid rgba(255,255,255,.06);
-}
-:root[data-theme="light"] .section.soft{
-  background: rgba(255,255,255,.55);
-  border-top: 1px solid rgba(10,10,10,.08);
-  border-bottom: 1px solid rgba(10,10,10,.08);
-}
-.sectionHead h2{
-  margin:0 0 8px;
-  font-size: clamp(1.5rem, 3.6vw, 2.2rem);
-}
-.sectionHead p{
-  margin:0;
-  color: var(--muted);
-  max-width: 720px;
-  font-weight:700;
-}
-
-/* ====== Split layout ====== */
-.split{
-  display:grid;
-  grid-template-columns: 1.05fr .95fr;
-  gap:16px;
-  align-items:start;
-}
-.split.reverse .splitText{ order:2; }
-.split.reverse .splitMedia{ order:1; }
-
-.splitText{
-  background: linear-gradient(180deg, rgba(15,16,14,.78), rgba(15,16,14,.56));
-  border:1px solid var(--line);
-  border-radius:26px;
-  padding:18px;
-  box-shadow: var(--shadow);
-}
-:root[data-theme="light"] .splitText{
-  background: linear-gradient(180deg, rgba(255,255,255,.86), rgba(255,255,255,.72));
-}
-.splitMedia{ display:grid; gap:10px; }
+/* ================== MEDIA FRAMES ================== */
 .mediaFrame{
-  height: 340px;
-  border-radius: 26px;
-  border: 1px solid var(--line);
+  height:340px;
+  border-radius:26px;
+  border:1px solid var(--line);
   box-shadow: var(--shadow);
-  background-size: cover;
+  background-size:cover;
   background-position:center;
 }
-.mediaFrame.tall{ height: 410px; }
-.mediaCaption{
-  color: rgba(244,244,244,.60);
-  font-weight:800;
-  padding: 0 6px;
-}
-:root[data-theme="light"] .mediaCaption{
-  color: rgba(20,20,20,.55);
-}
+.mediaFrame.tall{ height:410px; }
 
-/* Bullets */
-.bullets{
-  margin-top:14px;
-  display:grid;
-  gap:10px;
-}
-.bullet{
-  display:grid;
-  grid-template-columns: 12px 1fr;
-  gap:10px;
-  align-items:start;
-  padding:12px 14px;
-  border-radius:18px;
-  border:1px solid rgba(255,255,255,.08);
-  background: rgba(255,255,255,.04);
-}
-:root[data-theme="light"] .bullet{
-  border:1px solid rgba(10,10,10,.10);
-  background: rgba(255,255,255,.70);
-}
-.bDot{
-  width:10px; height:10px;
-  margin-top:7px;
-  border-radius:50%;
-  background: linear-gradient(135deg, var(--accent), var(--gold));
-}
-.bTitle{ font-weight:900; }
-.bText{ color: var(--muted); font-weight:700; }
+/* ================== MOBILE ================== */
+@media (max-width:920px){
+  .heroMosaic{ grid-template-columns:1fr; }
+  .mediaFrame{ height:260px; }
+  .mediaFrame.tall{ height:300px; }
 
-/* Cards */
-.cards3{
-  margin-top:14px;
-  display:grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap:12px;
-}
-.cards3.compact{ margin-top:12px; }
-.card{
-  background: rgba(255,255,255,.05);
-  border:1px solid var(--line);
-  border-radius:22px;
-  padding:16px;
-  box-shadow: var(--shadow);
-}
-:root[data-theme="light"] .card{
-  background: rgba(255,255,255,.78);
-}
-.card h3{ margin:0 0 6px; font-size:1.1rem; }
-.card p{ margin:0; color: var(--muted); font-weight:700; }
-
-/* Steps */
-.steps{
-  margin-top:14px;
-  display:grid;
-  gap:12px;
-}
-.step{
-  display:grid;
-  grid-template-columns: 14px 1fr;
-  gap:12px;
-  background: rgba(255,255,255,.05);
-  border:1px solid var(--line);
-  border-radius:22px;
-  padding:16px;
-  box-shadow: var(--shadow);
-}
-:root[data-theme="light"] .step{
-  background: rgba(255,255,255,.78);
-}
-.dot{
-  width:12px; height:12px;
-  margin-top:6px;
-  border-radius:50%;
-  background: linear-gradient(135deg, var(--accent), var(--gold));
-}
-.step h3{ margin:0 0 6px; }
-.step p{ margin:0; color: var(--muted); font-weight:700; }
-
-/* Contact */
-.contactBox{
-  background: linear-gradient(180deg, rgba(15,16,14,.78), rgba(15,16,14,.56));
-  border:1px solid var(--line);
-  border-radius:26px;
-  padding:20px;
-  box-shadow: var(--shadow);
-  display:grid;
-  grid-template-columns: 1.1fr .9fr;
-  gap:12px;
-  align-items:start;
-}
-:root[data-theme="light"] .contactBox{
-  background: linear-gradient(180deg, rgba(255,255,255,.86), rgba(255,255,255,.72));
-}
-
-/* Footer */
-.footer{
-  margin-top:16px;
-  padding:14px 0 4px;
-  color: rgba(244,244,244,.62);
-  font-weight:800;
-  text-align:center;
-}
-:root[data-theme="light"] .footer{
-  color: rgba(20,20,20,.55);
-}
-
-/* ====== Mobile ====== */
-@media (max-width: 920px){
-  .menuBtn{ display:flex; }
-  .nav{
-    display:none;
-    position:absolute;
-    top:70px;
-    left:16px;
-    right:16px;
-    background: rgba(15,16,14,.92);
-    border:1px solid var(--line);
-    border-radius:20px;
-    padding:10px;
+  /* نقلل الحركة في الجوال */
+  .tile:hover,
+  .mediaFrame:hover{
+    transform:none;
     box-shadow: var(--shadow);
-    flex-direction:column;
-    align-items:stretch;
   }
-  :root[data-theme="light"] .nav{
-    background: rgba(255,255,255,.92);
-  }
-  .nav.open{ display:flex; }
-
-  .heroGrid{ grid-template-columns:1fr; }
-  .split{ grid-template-columns:1fr; }
-  .split.reverse .splitText{ order:1; }
-  .split.reverse .splitMedia{ order:2; }
-
-  .cards3{ grid-template-columns:1fr; }
-  .contactBox{ grid-template-columns:1fr; }
-
-  .brandLogo{ width:102px; }
-  .page{ padding-top:74px; }
-
-  .mediaFrame{ height: 260px; }
-  .mediaFrame.tall{ height: 300px; }
 }
