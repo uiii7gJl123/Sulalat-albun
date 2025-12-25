@@ -25,21 +25,34 @@
 
 *{ box-sizing:border-box; }
 html,body{ height:100%; }
+
 body{
   margin:0;
   font-family:"Cairo", system-ui, -apple-system, Segoe UI, Roboto, Arial;
-  background:
-    radial-gradient(70% 70% at 50% 18%, rgba(149,173,114,.18), rgba(0,0,0,.78)),
-    radial-gradient(55% 55% at 75% 85%, rgba(202,166,106,.12), rgba(0,0,0,0));
+
+  /* ✅ DARK: خلفية متناسقة بدون تقطيع */
   background-color: var(--bg);
+  background-image:
+    radial-gradient(900px 700px at 50% 10%, rgba(149,173,114,.14), rgba(0,0,0,0)),
+    radial-gradient(900px 700px at 80% 85%, rgba(202,166,106,.10), rgba(0,0,0,0)),
+    linear-gradient(180deg, rgba(0,0,0,.55), rgba(0,0,0,.85));
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+
   color: var(--ink);
   overflow-x:hidden;
 }
+
+/* ✅ LIGHT: كما هو */
 :root[data-theme="light"] body{
   background:
     radial-gradient(70% 70% at 50% 18%, rgba(149,173,114,.10), rgba(244,239,230,.92)),
     radial-gradient(55% 55% at 75% 85%, rgba(202,166,106,.10), rgba(244,239,230,0));
   background-color: var(--bg);
+  background-repeat:no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
 }
 
 /* ====== Topbar ====== */
@@ -57,20 +70,19 @@ body{
 .topbarInner{
   max-width:1180px;
   margin:0 auto;
-  padding: 2px 10px;   /* ✅ أصغر بكثير */
+  padding: 12px 16px;
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap:6px;             /* ✅ تقليل المسافة */
+  gap:12px;
 }
 .brand{
   display:flex;
   align-items:center;
   text-decoration:none;
-  line-height:0;
 }
 .brandLogo{
-  width:86px;          /* ✅ تقليل بسيط بدون تغيير زر الثلاث خطوط */
+  width:92px;
   height:auto;
   display:block;
   filter: drop-shadow(0 10px 18px rgba(0,0,0,.55));
@@ -83,7 +95,7 @@ body{
 .topbarActions{
   display:flex;
   align-items:center;
-  gap:8px;            /* ✅ أقل */
+  gap:10px;
 }
 
 /* Theme button (no text) */
@@ -139,6 +151,7 @@ body{
   justify-content:center;
   gap:4px;
   cursor:pointer;
+
   flex-direction:column;
 }
 :root[data-theme="light"] .menuBtn{
@@ -180,7 +193,7 @@ body{
 }
 
 /* ====== Page ====== */
-.page{ padding-top:54px; } /* ✅ أصغر لأن البار صار أنحف */
+.page{ padding-top:78px; }
 .wrap{
   max-width:1180px;
   margin:0 auto;
@@ -228,9 +241,8 @@ body{
   font-weight:900;
   font-size:.95rem;
 }
-:root[data-theme="light"] .kicker{
-  color: rgba(20,20,20,.80);
-}
+:root[data-theme="light"] .kicker{ color: rgba(20,20,20,.80); }
+
 h1{
   margin:14px 0 8px;
   font-size: clamp(1.9rem, 5.2vw, 3.2rem);
@@ -336,7 +348,7 @@ h1 span{
   font-weight:700;
 }
 
-/* ====== Split layout (نص + صورة مرتبطة) ====== */
+/* ====== Split layout ====== */
 .split{
   display:grid;
   grid-template-columns: 1.05fr .95fr;
@@ -375,7 +387,7 @@ h1 span{
   color: rgba(20,20,20,.55);
 }
 
-/* Bullets (نبذة) */
+/* Bullets */
 .bullets{
   margin-top:14px;
   display:grid;
@@ -468,19 +480,6 @@ h1 span{
 :root[data-theme="light"] .contactBox{
   background: linear-gradient(180deg, rgba(255,255,255,.86), rgba(255,255,255,.72));
 }
-.contactMini{ display:grid; gap:10px; }
-.miniCard{
-  border:1px solid rgba(255,255,255,.10);
-  border-radius:18px;
-  padding:14px;
-  background: rgba(255,255,255,.04);
-}
-:root[data-theme="light"] .miniCard{
-  border:1px solid rgba(10,10,10,.10);
-  background: rgba(255,255,255,.70);
-}
-.miniTitle{ font-weight:900; margin-bottom:4px; }
-.miniText{ color: var(--muted); font-weight:800; }
 
 /* Footer */
 .footer{
@@ -524,9 +523,8 @@ h1 span{
   .cards3{ grid-template-columns:1fr; }
   .contactBox{ grid-template-columns:1fr; }
 
-  .brandLogo{ width:92px; } /* ✅ أصغر على الموبايل */
-  .page{ padding-top:52px; } /* ✅ أصغر */
-  .topbarInner{ padding: 2px 8px; gap:6px; } /* ✅ أنحف للموبايل */
+  .brandLogo{ width:102px; }
+  .page{ padding-top:74px; }
 
   .mediaFrame{ height: 260px; }
   .mediaFrame.tall{ height: 300px; }
