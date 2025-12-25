@@ -9,80 +9,23 @@ const LOGO_LIGHT = `/assets/images/logo-light.png`;
 function useReveal() {
   useEffect(() => {
     const els = Array.from(document.querySelectorAll("[data-reveal]"));
-
     const io = new IntersectionObserver(
       (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) {
-            e.target.classList.add("is-in");
-            e.target.classList.remove("is-out");
-          } else {
-            e.target.classList.remove("is-in");
-            e.target.classList.add("is-out");
-          }
-        });
+        for (const e of entries) {
+          if (e.isIntersecting) e.target.classList.add("is-in");
+        }
       },
-      { threshold: 0.2 }
+      { threshold: 0.12 }
     );
-
     els.forEach((el) => io.observe(el));
     return () => io.disconnect();
   }, []);
 }
 
-/* (1) Parallax خفيف جدًا للصور فقط */
-function useParallax() {
-  useEffect(() => {
-    const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
-    if (reduce) return;
-
-    const els = Array.from(document.querySelectorAll("[data-parallax]"));
-    if (!els.length) return;
-
-    let raf = 0;
-
-    const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
-
-    const update = () => {
-      raf = 0;
-      const vh = window.innerHeight || 800;
-
-      for (const el of els) {
-        const depth = parseFloat(el.getAttribute("data-depth") || "0.06");
-        const rect = el.getBoundingClientRect();
-
-        // نسبة موقع العنصر داخل الشاشة (-1..1)
-        const t = ((rect.top + rect.height * 0.5) - vh * 0.5) / (vh * 0.5);
-
-        // حركة صغيرة جدًا (±10px max)
-        const y = clamp(-t * 10 * depth * 10, -10, 10);
-
-        el.style.setProperty("--py", `${y.toFixed(2)}px`);
-      }
-    };
-
-    const onScroll = () => {
-      if (raf) return;
-      raf = requestAnimationFrame(update);
-    };
-
-    update();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
-
-    return () => {
-      if (raf) cancelAnimationFrame(raf);
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-    };
-  }, []);
-}
-
 export default function App() {
   useReveal();
-  useParallax();
-
   const [menuOpen, setMenuOpen] = useState(false);
+
   const [theme, setTheme] = useState(() => localStorage.getItem("theme") || "dark");
 
   useEffect(() => {
@@ -159,10 +102,8 @@ export default function App() {
                 <span>توريد بن أخضر بجودة ثابتة وخيارات متنوعة تلائم مختلف الأذواق.</span>
               </h1>
 
+              {/* ✅ حذف زر تواصل معنا هنا */}
               <div className="ctaRow">
-                <a className="btn" href="#contact">
-                  تواصل معنا
-                </a>
                 <a className="btn ghost" href="#services">
                   استعرض الخدمات
                 </a>
@@ -175,35 +116,11 @@ export default function App() {
               </div>
             </div>
 
-            <div className="heroMosaic" data-reveal data-parallax data-depth="0.05">
-              <div
-                className="tile t1"
-                data-reveal
-                data-parallax
-                data-depth="0.06"
-                style={{ backgroundImage: `url(${IMG(storyImages.hero[0])})` }}
-              />
-              <div
-                className="tile t2"
-                data-reveal
-                data-parallax
-                data-depth="0.07"
-                style={{ backgroundImage: `url(${IMG(storyImages.hero[1])})` }}
-              />
-              <div
-                className="tile t3"
-                data-reveal
-                data-parallax
-                data-depth="0.06"
-                style={{ backgroundImage: `url(${IMG(storyImages.hero[2])})` }}
-              />
-              <div
-                className="tile t4"
-                data-reveal
-                data-parallax
-                data-depth="0.07"
-                style={{ backgroundImage: `url(${IMG(storyImages.hero[3])})` }}
-              />
+            <div className="heroMosaic" data-reveal>
+              <div className="tile t1" style={{ backgroundImage: `url(${IMG(storyImages.hero[0])})` }} />
+              <div className="tile t2" style={{ backgroundImage: `url(${IMG(storyImages.hero[1])})` }} />
+              <div className="tile t3" style={{ backgroundImage: `url(${IMG(storyImages.hero[2])})` }} />
+              <div className="tile t4" style={{ backgroundImage: `url(${IMG(storyImages.hero[3])})` }} />
             </div>
           </div>
         </section>
@@ -246,13 +163,7 @@ export default function App() {
             </div>
 
             <div className="splitMedia" data-reveal>
-              <div
-                className="mediaFrame"
-                data-reveal
-                data-parallax
-                data-depth="0.06"
-                style={{ backgroundImage: `url(${IMG(storyImages.about)})` }}
-              />
+              <div className="mediaFrame" style={{ backgroundImage: `url(${IMG(storyImages.about)})` }} />
               <div className="mediaCaption">لقطات من المصدر والعناية بالمحصول</div>
             </div>
           </div>
@@ -284,13 +195,7 @@ export default function App() {
             </div>
 
             <div className="splitMedia" data-reveal>
-              <div
-                className="mediaFrame tall"
-                data-reveal
-                data-parallax
-                data-depth="0.07"
-                style={{ backgroundImage: `url(${IMG(storyImages.services)})` }}
-              />
+              <div className="mediaFrame tall" style={{ backgroundImage: `url(${IMG(storyImages.services)})` }} />
               <div className="mediaCaption">حلول تنفيذية تدعم التشغيل اليومي للمحمصة</div>
             </div>
           </div>
@@ -331,13 +236,7 @@ export default function App() {
             </div>
 
             <div className="splitMedia" data-reveal>
-              <div
-                className="mediaFrame"
-                data-reveal
-                data-parallax
-                data-depth="0.06"
-                style={{ backgroundImage: `url(${IMG(storyImages.quality)})` }}
-              />
+              <div className="mediaFrame" style={{ backgroundImage: `url(${IMG(storyImages.quality)})` }} />
               <div className="mediaCaption">معايير ثابتة • تشغيل أسهل • نتائج أوضح</div>
             </div>
           </div>
