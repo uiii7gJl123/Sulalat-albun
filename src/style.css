@@ -151,7 +151,6 @@ body{
   justify-content:center;
   gap:4px;
   cursor:pointer;
-
   flex-direction:column;
 }
 :root[data-theme="light"] .menuBtn{
@@ -200,31 +199,23 @@ body{
   padding:0 16px;
 }
 
-/* ====== Reveal ====== */
+/* ====== Reveal (أوضح) ====== */
 [data-reveal]{
-  opacity:0;
-  transform: translateY(10px);
-  transition: opacity .55s ease, transform .55s ease;
+  opacity: 0;
+  transform: translateY(40px) scale(0.98);
+  transition:
+    opacity .8s cubic-bezier(.22,.61,.36,1),
+    transform .8s cubic-bezier(.22,.61,.36,1);
+  will-change: transform, opacity;
 }
 [data-reveal].is-in{
-  opacity:1;
-  transform:none;
-}
-
-/* ===== Scroll Motion (Subtle) ===== */
-[data-motion]{
-  will-change: transform, opacity;
-  transition:
-    transform .6s cubic-bezier(.22,.61,.36,1),
-    opacity .6s ease;
-}
-[data-motion="in"]{
-  transform: translateY(0);
   opacity: 1;
+  transform: translateY(0) scale(1);
 }
-[data-motion="out"]{
-  transform: translateY(-40px);
+/* خروج خفيف أثناء التمرير */
+[data-reveal].is-out{
   opacity: 0;
+  transform: translateY(-30px) scale(0.99);
 }
 
 /* ====== Hero ====== */
