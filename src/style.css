@@ -44,7 +44,7 @@ body{
   overflow-x:hidden;
 }
 
-/* ✅ LIGHT */
+/* ✅ LIGHT: كما هو */
 :root[data-theme="light"] body{
   background:
     radial-gradient(70% 70% at 50% 18%, rgba(149,173,114,.10), rgba(244,239,230,.92)),
@@ -67,27 +67,22 @@ body{
 :root[data-theme="light"] .topbar{
   background: rgba(244,239,230,.75);
 }
-
-/* ✅ تصغير البار */
 .topbarInner{
   max-width:1180px;
   margin:0 auto;
-  padding: 8px 12px;  /* كان 12px 16px */
+  padding: 12px 16px;
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap:10px;
+  gap:12px;
 }
-
 .brand{
   display:flex;
   align-items:center;
   text-decoration:none;
 }
-
-/* ✅ حجم الشعار */
 .brandLogo{
-  width:76px; /* كان 92 */
+  width:92px;
   height:auto;
   display:block;
   filter: drop-shadow(0 10px 18px rgba(0,0,0,.55));
@@ -100,15 +95,15 @@ body{
 .topbarActions{
   display:flex;
   align-items:center;
-  gap:8px; /* كان 10 */
+  gap:10px;
 }
 
-/* Theme button */
+/* Theme button (no text) */
 .themeBtn{
-  width:38px; height:38px; /* كان 44 */
+  width:44px; height:44px;
   border:1px solid var(--line);
   background: rgba(255,255,255,.04);
-  border-radius:12px;
+  border-radius:14px;
   display:flex;
   align-items:center;
   justify-content:center;
@@ -118,7 +113,7 @@ body{
   background: rgba(255,255,255,.65);
 }
 .themeIcon{
-  width:16px; height:16px; /* كان 18 */
+  width:18px; height:18px;
   border-radius:999px;
   border:2px solid rgba(244,244,244,.85);
   position:relative;
@@ -129,7 +124,7 @@ body{
 :root:not([data-theme="light"]) .themeIcon::after{
   content:"";
   position:absolute;
-  width:9px; height:9px;
+  width:10px; height:10px;
   border-radius:999px;
   background: rgba(244,244,244,.85);
   top:50%; left:50%;
@@ -138,7 +133,7 @@ body{
 :root[data-theme="light"] .themeIcon::after{
   content:"";
   position:absolute;
-  width:7px; height:7px;
+  width:8px; height:8px;
   border-radius:999px;
   background: rgba(20,20,20,.70);
   top:50%; left:50%;
@@ -147,17 +142,16 @@ body{
 
 /* Menu button (mobile) */
 .menuBtn{
-  width:38px; height:38px; /* كان 44 */
+  width:44px; height:44px;
   border:1px solid var(--line);
   background: rgba(255,255,255,.04);
-  border-radius:12px;
+  border-radius:14px;
   display:none;
   align-items:center;
   justify-content:center;
   gap:4px;
   cursor:pointer;
 
-  /* ✅ الخطوط فوق بعض */
   flex-direction:column;
 }
 :root[data-theme="light"] .menuBtn{
@@ -165,7 +159,7 @@ body{
 }
 .menuBtn span{
   display:block;
-  width:16px; height:2px; /* كان 18 */
+  width:18px; height:2px;
   background:rgba(244,244,244,.85);
   border-radius:2px;
 }
@@ -176,15 +170,15 @@ body{
 /* Nav */
 .nav{
   display:flex;
-  gap:8px;
+  gap:10px;
   align-items:center;
 }
 .nav a{
   text-decoration:none;
   color:rgba(244,244,244,.82);
   font-weight:800;
-  padding:8px 10px; /* كان 10 12 */
-  border-radius:12px;
+  padding:10px 12px;
+  border-radius:14px;
   border:1px solid transparent;
 }
 :root[data-theme="light"] .nav a{
@@ -199,20 +193,22 @@ body{
 }
 
 /* ====== Page ====== */
-.page{ padding-top:64px; } /* كان 78 */
+.page{ padding-top:78px; }
 .wrap{
   max-width:1180px;
   margin:0 auto;
   padding:0 16px;
 }
 
-/* ====== Reveal (آمن) ====== */
+/* ====== Reveal ====== */
 [data-reveal]{
   opacity:0;
-  transition: opacity .6s ease;
+  transform: translateY(10px);
+  transition: opacity .55s ease, transform .55s ease;
 }
 [data-reveal].is-in{
   opacity:1;
+  transform:none;
 }
 
 /* ====== Hero ====== */
@@ -309,7 +305,7 @@ h1 span{
   color: rgba(20,20,20,.78);
 }
 
-/* Mosaic images (بدون transform) */
+/* Mosaic images */
 .heroMosaic{
   display:grid;
   grid-template-columns: 1fr 1fr;
@@ -324,6 +320,10 @@ h1 span{
   min-height: 150px;
   filter: saturate(1.02) contrast(1.02);
 }
+.t1{ transform: rotate(-2deg); }
+.t2{ transform: rotate(2deg); }
+.t3{ transform: rotate(2deg); }
+.t4{ transform: rotate(-2deg); }
 
 /* ====== Sections ====== */
 .section{ padding: 46px 0; }
@@ -473,6 +473,7 @@ h1 span{
   padding:20px;
   box-shadow: var(--shadow);
   display:grid;
+  grid-template-columns: 1.1fr .9fr;
   gap:12px;
   align-items:start;
 }
@@ -495,16 +496,15 @@ h1 span{
 /* ====== Mobile ====== */
 @media (max-width: 920px){
   .menuBtn{ display:flex; }
-
   .nav{
     display:none;
     position:absolute;
-    top:56px;           /* كان 70 */
-    left:12px;          /* كان 16 */
-    right:12px;         /* كان 16 */
+    top:70px;
+    left:16px;
+    right:16px;
     background: rgba(15,16,14,.92);
     border:1px solid var(--line);
-    border-radius:18px;
+    border-radius:20px;
     padding:10px;
     box-shadow: var(--shadow);
     flex-direction:column;
@@ -523,32 +523,79 @@ h1 span{
   .cards3{ grid-template-columns:1fr; }
   .contactBox{ grid-template-columns:1fr; }
 
-  .brandLogo{ width:82px; }  /* كان 102 */
-  .page{ padding-top:60px; } /* كان 74 */
+  .brandLogo{ width:102px; }
+  .page{ padding-top:74px; }
 
   .mediaFrame{ height: 260px; }
   .mediaFrame.tall{ height: 300px; }
 }
 
-/* ===============================
-   SAFETY RESET FOR ANIMATIONS
-   يمنع تخريب التخطيط على الجوال
-================================ */
-.heroMosaic,
+/* =========================================
+   IMAGE MOTION (1) دخول/خروج + (2) Hover + Parallax
+   - الصور فقط (tile, mediaFrame, heroMosaic container)
+   - آمن للجوال
+========================================= */
+
+/* متغيرات تحكم للحركة */
 .tile,
 .mediaFrame,
-.splitMedia,
-.splitText,
-.section,
-.hero,
-.wrap {
-  transform: none !important;
-  will-change: auto !important;
+.heroMosaic{
+  --py: 0px;            /* parallax translate Y */
+  --ps: 0.96;           /* base scale */
+  --hr: 0deg;           /* hover rotate */
+  --hs: 1;              /* hover scale */
+  will-change: transform, opacity;
+  opacity: 0;
+  transform: translate3d(0, var(--py), 0) scale(calc(var(--ps) * var(--hs))) rotate(var(--hr));
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s ease;
 }
 
-body,
-.page,
-.section,
-.wrap {
-  overflow-x: hidden;
+/* دخول */
+.is-in.tile,
+.is-in.mediaFrame,
+.is-in.heroMosaic{
+  opacity: 1;
+  --ps: 1;
+}
+
+/* خروج */
+.is-out.tile,
+.is-out.mediaFrame,
+.is-out.heroMosaic{
+  opacity: 0;
+  --ps: 0.96;
+}
+
+/* Hover motion (فقط للأجهزة اللي فيها ماوس) */
+@media (hover:hover) and (pointer:fine){
+  .tile:hover,
+  .mediaFrame:hover{
+    --hs: 1.02;
+    --hr: -0.6deg;
+    filter: saturate(1.04) contrast(1.03);
+  }
+}
+
+/* تقليل شدة الحركة على الجوال */
+@media (max-width: 768px){
+  .tile,
+  .mediaFrame,
+  .heroMosaic{
+    transition:
+      opacity 0.6s ease,
+      transform 0.6s ease;
+  }
+}
+
+/* احترام إعداد تقليل الحركة */
+@media (prefers-reduced-motion: reduce){
+  .tile,
+  .mediaFrame,
+  .heroMosaic{
+    transition: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
 }
