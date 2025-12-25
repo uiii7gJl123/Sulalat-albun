@@ -211,6 +211,22 @@ body{
   transform:none;
 }
 
+/* ===== Scroll Motion (Subtle) ===== */
+[data-motion]{
+  will-change: transform, opacity;
+  transition:
+    transform .6s cubic-bezier(.22,.61,.36,1),
+    opacity .6s ease;
+}
+[data-motion="in"]{
+  transform: translateY(0);
+  opacity: 1;
+}
+[data-motion="out"]{
+  transform: translateY(-40px);
+  opacity: 0;
+}
+
 /* ====== Hero ====== */
 .hero{ padding: 28px 0 24px; }
 .heroGrid{
