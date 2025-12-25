@@ -22,8 +22,29 @@ function useReveal() {
   }, []);
 }
 
+function useScrollMotion() {
+  useEffect(() => {
+    const items = Array.from(document.querySelectorAll("[data-motion]"));
+
+    const onScroll = () => {
+      const vh = window.innerHeight;
+      for (const el of items) {
+        const rect = el.getBoundingClientRect();
+        const visible = rect.top < vh * 0.65 && rect.bottom > vh * 0.25;
+        el.setAttribute("data-motion", visible ? "in" : "out");
+      }
+    };
+
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+}
+
 export default function App() {
   useReveal();
+  useScrollMotion();
+
   const [menuOpen, setMenuOpen] = useState(false);
 
   const [theme, setTheme] = useState(() => localStorage.getItem("theme") || "dark");
@@ -95,7 +116,7 @@ export default function App() {
         {/* HERO */}
         <section className="hero">
           <div className="wrap heroGrid">
-            <div className="heroText" data-reveal>
+            <div className="heroText" data-reveal data-motion="out">
               <div className="kicker">بن أخضر فاخر • سلسلة توريد موثوقة</div>
               <h1>
                 سلالة البن الفاخر
@@ -118,11 +139,23 @@ export default function App() {
               </div>
             </div>
 
-            <div className="heroMosaic" data-reveal>
-              <div className="tile t1" style={{ backgroundImage: `url(${IMG(storyImages.hero[0])})` }} />
-              <div className="tile t2" style={{ backgroundImage: `url(${IMG(storyImages.hero[1])})` }} />
-              <div className="tile t3" style={{ backgroundImage: `url(${IMG(storyImages.hero[2])})` }} />
-              <div className="tile t4" style={{ backgroundImage: `url(${IMG(storyImages.hero[3])})` }} />
+            <div className="heroMosaic" data-reveal data-motion="out">
+              <div
+                className="tile t1"
+                style={{ backgroundImage: `url(${IMG(storyImages.hero[0])})` }}
+              />
+              <div
+                className="tile t2"
+                style={{ backgroundImage: `url(${IMG(storyImages.hero[1])})` }}
+              />
+              <div
+                className="tile t3"
+                style={{ backgroundImage: `url(${IMG(storyImages.hero[2])})` }}
+              />
+              <div
+                className="tile t4"
+                style={{ backgroundImage: `url(${IMG(storyImages.hero[3])})` }}
+              />
             </div>
           </div>
         </section>
@@ -130,7 +163,7 @@ export default function App() {
         {/* ABOUT */}
         <section id="about" className="section">
           <div className="wrap split">
-            <div className="splitText" data-reveal>
+            <div className="splitText" data-reveal data-motion="out">
               <div className="sectionHead">
                 <h2>نبذة عنا</h2>
                 <p>
@@ -164,7 +197,7 @@ export default function App() {
               </div>
             </div>
 
-            <div className="splitMedia" data-reveal>
+            <div className="splitMedia" data-reveal data-motion="out">
               <div className="mediaFrame" style={{ backgroundImage: `url(${IMG(storyImages.about)})` }} />
               <div className="mediaCaption">لقطات من المصدر والعناية بالمحصول</div>
             </div>
@@ -174,13 +207,13 @@ export default function App() {
         {/* SERVICES */}
         <section id="services" className="section soft">
           <div className="wrap split reverse">
-            <div className="splitText" data-reveal>
+            <div className="splitText" data-reveal data-motion="out">
               <div className="sectionHead">
                 <h2>خدماتنا المتكاملة</h2>
                 <p>مجموعة خدمات تلبي احتياج محامص ومتاجر القهوة المختصة بشكل عملي وواضح.</p>
               </div>
 
-              <div className="cards3 compact">
+              <div className="cards3 compact" data-motion="out">
                 <div className="card">
                   <h3>وساطة الاستيراد</h3>
                   <p>توفير خيارات بن أخضر متنوعة مع التركيز على الأصناف المناسبة للسوق.</p>
@@ -196,7 +229,7 @@ export default function App() {
               </div>
             </div>
 
-            <div className="splitMedia" data-reveal>
+            <div className="splitMedia" data-reveal data-motion="out">
               <div className="mediaFrame tall" style={{ backgroundImage: `url(${IMG(storyImages.services)})` }} />
               <div className="mediaCaption">حلول تنفيذية تدعم التشغيل اليومي للمحمصة</div>
             </div>
@@ -206,13 +239,13 @@ export default function App() {
         {/* QUALITY */}
         <section id="quality" className="section">
           <div className="wrap split">
-            <div className="splitText" data-reveal>
+            <div className="splitText" data-reveal data-motion="out">
               <div className="sectionHead">
                 <h2>نهجنا في الجودة</h2>
                 <p>نلتزم بوضوح المعايير وسهولة التشغيل واستمرارية التوريد.</p>
               </div>
 
-              <div className="steps" data-reveal>
+              <div className="steps" data-reveal data-motion="out">
                 <div className="step">
                   <div className="dot" />
                   <div>
@@ -237,7 +270,7 @@ export default function App() {
               </div>
             </div>
 
-            <div className="splitMedia" data-reveal>
+            <div className="splitMedia" data-reveal data-motion="out">
               <div className="mediaFrame" style={{ backgroundImage: `url(${IMG(storyImages.quality)})` }} />
               <div className="mediaCaption">معايير ثابتة • تشغيل أسهل • نتائج أوضح</div>
             </div>
@@ -247,7 +280,7 @@ export default function App() {
         {/* CONTACT */}
         <section id="contact" className="section soft">
           <div className="wrap">
-            <div className="contactBox" data-reveal style={{ gridTemplateColumns: "1fr" }}>
+            <div className="contactBox" data-reveal data-motion="out" style={{ gridTemplateColumns: "1fr" }}>
               <div>
                 <h2>تواصل معنا</h2>
 
