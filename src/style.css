@@ -58,31 +58,43 @@ body{
 /* ====== Topbar ====== */
 .topbar{
   position:fixed;
-  top:0;
-  left:0;
-  right:0;
+  top:0; left:0; right:0;
   z-index:10;
-  background: rgba(7,8,7,.65);
+
+  background: rgba(7,8,7,.72);
   border-bottom: 1px solid var(--line);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(12px);
+
+  /* ✅ صغرنا البار نفسه */
+  height:44px;
+  min-height:44px;
+  display:flex;
+  align-items:center;
 }
 :root[data-theme="light"] .topbar{
   background: rgba(244,239,230,.75);
 }
+
 .topbarInner{
   max-width:1180px;
   margin:0 auto;
-  padding: 4px 12px;   /* ⬅️ نحيف جدًا */
+
+  /* ✅ نفس ارتفاع البار + بدون padding عمودي */
+  height:44px;
+  padding: 0 12px;
+
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap:6px;
+  gap:8px;
 }
+
 .brand{
   display:flex;
   align-items:center;
   text-decoration:none;
 }
+
 .brandLogo{
   width:92px;
   height:auto;
@@ -110,10 +122,16 @@ body{
   align-items:center;
   justify-content:center;
   cursor:pointer;
+
+  /* ✅ منع أي ارتفاع خفي */
+  margin:0;
+  padding:0;
+  line-height:1;
 }
 :root[data-theme="light"] .themeBtn{
   background: rgba(255,255,255,.65);
 }
+
 .themeIcon{
   width:18px; height:18px;
   border-radius:999px;
@@ -155,10 +173,16 @@ body{
   cursor:pointer;
 
   flex-direction:column;
+
+  /* ✅ منع أي ارتفاع خفي */
+  margin:0;
+  padding:0;
+  line-height:1;
 }
 :root[data-theme="light"] .menuBtn{
   background: rgba(255,255,255,.65);
 }
+
 .menuBtn span{
   display:block;
   width:18px; height:2px;
@@ -195,7 +219,7 @@ body{
 }
 
 /* ====== Page ====== */
-.page{ padding-top:78px; }
+.page{ padding-top:44px; } /* ✅ نفس ارتفاع البار */
 .wrap{
   max-width:1180px;
   margin:0 auto;
@@ -498,12 +522,13 @@ h1 span{
 /* ====== Mobile ====== */
 @media (max-width: 920px){
   .menuBtn{ display:flex; }
+
   .nav{
     display:none;
     position:absolute;
-    top:70px;
-    left:16px;
-    right:16px;
+    top:60px;                 /* ✅ أقرب شوي لأن البار صار أنحف */
+    left:12px;
+    right:12px;
     background: rgba(15,16,14,.92);
     border:1px solid var(--line);
     border-radius:20px;
@@ -525,79 +550,9 @@ h1 span{
   .cards3{ grid-template-columns:1fr; }
   .contactBox{ grid-template-columns:1fr; }
 
-  .brandLogo{ width:102px; }
-  .page{ padding-top:74px; }
+  .brandLogo{ width:92px; } /* ✅ لا نكبره بالموبايل حتى ما يزود ارتفاع البار */
+  .page{ padding-top:44px; }
 
   .mediaFrame{ height: 260px; }
   .mediaFrame.tall{ height: 300px; }
-}
-
-/* =========================================
-   IMAGE MOTION (1) دخول/خروج + (2) Hover + Parallax
-   - الصور فقط (tile, mediaFrame, heroMosaic container)
-   - آمن للجوال
-========================================= */
-
-/* متغيرات تحكم للحركة */
-.tile,
-.mediaFrame,
-.heroMosaic{
-  --py: 0px;            /* parallax translate Y */
-  --ps: 0.96;           /* base scale */
-  --hr: 0deg;           /* hover rotate */
-  --hs: 1;              /* hover scale */
-  will-change: transform, opacity;
-  opacity: 0;
-  transform: translate3d(0, var(--py), 0) scale(calc(var(--ps) * var(--hs))) rotate(var(--hr));
-  transition:
-    opacity 0.8s ease,
-    transform 0.8s ease;
-}
-
-/* دخول */
-.is-in.tile,
-.is-in.mediaFrame,
-.is-in.heroMosaic{
-  opacity: 1;
-  --ps: 1;
-}
-
-/* خروج */
-.is-out.tile,
-.is-out.mediaFrame,
-.is-out.heroMosaic{
-  opacity: 0;
-  --ps: 0.96;
-}
-
-/* Hover motion (فقط للأجهزة اللي فيها ماوس) */
-@media (hover:hover) and (pointer:fine){
-  .tile:hover,
-  .mediaFrame:hover{
-    --hs: 1.02;
-    --hr: -0.6deg;
-    filter: saturate(1.04) contrast(1.03);
-  }
-}
-
-/* تقليل شدة الحركة على الجوال */
-@media (max-width: 768px){
-  .tile,
-  .mediaFrame,
-  .heroMosaic{
-    transition:
-      opacity 0.6s ease,
-      transform 0.6s ease;
-  }
-}
-
-/* احترام إعداد تقليل الحركة */
-@media (prefers-reduced-motion: reduce){
-  .tile,
-  .mediaFrame,
-  .heroMosaic{
-    transition: none !important;
-    transform: none !important;
-    opacity: 1 !important;
-  }
 }
