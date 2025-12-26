@@ -9,8 +9,8 @@
   --gold:#caa66a;
   --shadow: 0 18px 45px rgba(0,0,0,.35);
 
-  /* ✅ لازم يكون أكبر من ارتفاع الشعار */
-  --topbarH: 96px;  /* كان 68px */
+  /* ✅ لازم أكبر من الشعار */
+  --topbarH: 116px; /* كان 96px */
 }
 
 /* LIGHT THEME */
@@ -100,11 +100,11 @@ body{
   margin-right:-6px;
 }
 
-/* ✅ تكبير فعلي + منع أي قيود */
+/* ✅ تكبير أكبر */
 .brandLogo{
-  height:84px !important;     /* كان 72px */
+  height:102px !important;     /* كان 84px */
   width:auto !important;
-  max-height:none !important; /* مهم جدًا */
+  max-height:none !important;
   display:block;
   filter: drop-shadow(0 10px 18px rgba(0,0,0,.55));
 }
@@ -537,8 +537,8 @@ h1 span{
   .cards3{ grid-template-columns:1fr; }
   .contactBox{ grid-template-columns:1fr; }
 
-  /* ✅ خليه قريب من نفس الكبير */
-  .brandLogo{ height:74px !important; max-height:none !important; }
+  /* ✅ نفس الحجم الكبير بالموبايل */
+  .brandLogo{ height:96px !important; max-height:none !important; width:auto !important; }
 
   .mediaFrame{ height: 260px; }
   .mediaFrame.tall{ height: 300px; }
