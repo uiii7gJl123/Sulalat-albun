@@ -35,14 +35,15 @@ export default function App() {
 
   const logoSrc = useMemo(() => (theme === "light" ? LOGO_LIGHT : LOGO_DARK), [theme]);
 
-  // ✅ تحكم قطعي بحجم الشعار (يغلب CSS)
+  // ✅ تحكم قطعي بحجم الشعار (يغلب CSS) — واضح وكبير بدون تضخيم البار
   const logoStyle = useMemo(
     () => ({
-      height: "76px",     // كبّره هنا
+      height: "64px",
       width: "auto",
       maxHeight: "none",
       maxWidth: "none",
       display: "block",
+      objectFit: "contain",
     }),
     []
   );
@@ -62,15 +63,12 @@ export default function App() {
     <div className="app">
       <header className="topbar">
         <div className="topbarInner">
+          {/* يمين: الشعار */}
           <a className="brand" href="#home" onClick={() => setMenuOpen(false)}>
-            <img
-              className="brandLogo"
-              src={logoSrc}
-              alt="شعار سلالة البن الفاخر"
-              style={logoStyle}
-            />
+            <img className="brandLogo" src={logoSrc} alt="شعار سلالة البن الفاخر" style={logoStyle} />
           </a>
 
+          {/* يسار: الأزرار */}
           <div className="topbarActions">
             <button
               className="themeBtn"
@@ -80,17 +78,14 @@ export default function App() {
               <span className="themeIcon" />
             </button>
 
-            <button
-              className="menuBtn"
-              aria-label="القائمة"
-              onClick={() => setMenuOpen((v) => !v)}
-            >
+            <button className="menuBtn" aria-label="القائمة" onClick={() => setMenuOpen((v) => !v)}>
               <span />
               <span />
               <span />
             </button>
           </div>
 
+          {/* قائمة (تظهر ديسكتوب + تنفتح بالموبايل) */}
           <nav className={`nav ${menuOpen ? "open" : ""}`}>
             <a href="#about" onClick={() => setMenuOpen(false)}>
               نبذة
@@ -199,13 +194,29 @@ export default function App() {
                   <h3>وساطة الاستيراد</h3>
                   <p>توفير خيارات بن أخضر متنوعة مع التركيز على الأصناف المناسبة للسوق.</p>
                 </div>
+
                 <div className="card">
                   <h3>الخدمات اللوجستية</h3>
                   <p>تنسيق الشحن والتسليم بما يحافظ على جودة البن وسلامة الشحنة.</p>
                 </div>
+
                 <div className="card">
                   <h3>استشارات مهنية</h3>
                   <p>مساندة في اختيار الأصناف وبناء قائمة توريد مناسبة حسب هدف المحمصة.</p>
+                </div>
+
+                {/* ✅ الخدمة الجديدة */}
+                <div className="card">
+                  <h3>التحميص عند الطلب</h3>
+                  <p>
+                    نوفر خدمة تحميص احترافية عند الطلب، تعتمد على فهم دقيق لسلوك البن، وبروفايلات تحميص مصممة لتناسب:
+                  </p>
+                  <ul className="cardList">
+                    <li>القهوة المختصة</li>
+                    <li>الإسبريسو</li>
+                    <li>القهوة المفلترة</li>
+                    <li>الاستخدام التجاري عالي الجودة</li>
+                  </ul>
                 </div>
               </div>
             </div>
