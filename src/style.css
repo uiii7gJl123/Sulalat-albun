@@ -71,38 +71,37 @@ body{
   background: rgba(244,239,230,.75);
 }
 
-/* ✅ تعديل: نخلي البار بعرض الشاشة + نسوي توزيع يمين/يسار واضح */
 .topbarInner{
   width:100%;
   max-width:none;
   margin:0;
   height: var(--topbarH);
-  padding: 0 26px;              /* ✅ رجّعنا أطراف أوسع عشان الشعار يروح يمين والأزرار يسار */
+  padding: 0 26px;
   display:flex;
   align-items:center;
   justify-content:space-between;
   gap:14px;
 }
 
-/* ✅ نسحب مجموعة الأزرار أقصى اليسار */
+/* يسار */
 .topbarActions{
   display:flex;
   align-items:center;
-  gap:16px;                     /* ✅ باعدنا بين زر الثيم والثلاث خطوط */
-  margin-left:-6px;             /* ✅ دفعة صغيرة لليسار (بدون تخبيص) */
+  gap:16px;
+  margin-left:-6px;
 }
 
-/* ✅ نسحب الشعار أقصى اليمين */
+/* يمين */
 .brand{
   display:flex;
   align-items:center;
   text-decoration:none;
-  margin-right:-6px;            /* ✅ دفعة صغيرة لليمين */
+  margin-right:-6px;
 }
 
-/* ✅ تكبير فعلي للشعار */
+/* ✅ تكبير الشعار أكثر */
 .brandLogo{
-  height:58px;                  /* ✅ كبرناه عشان يبان */
+  height:64px;          /* كان 58px */
   width:auto;
   display:block;
   filter: drop-shadow(0 10px 18px rgba(0,0,0,.55));
@@ -536,7 +535,8 @@ h1 span{
   .cards3{ grid-template-columns:1fr; }
   .contactBox{ grid-template-columns:1fr; }
 
-  .brandLogo{ height:50px; }
+  /* ✅ كبرناه هنا كمان */
+  .brandLogo{ height:56px; }
 
   .mediaFrame{ height: 260px; }
   .mediaFrame.tall{ height: 300px; }
