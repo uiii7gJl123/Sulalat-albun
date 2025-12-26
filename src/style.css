@@ -71,41 +71,38 @@ body{
   background: rgba(244,239,230,.75);
 }
 
-/* ✅ أهم تعديل: البار بعرض الشاشة + توزيع واضح */
+/* ✅ تعديل: نخلي البار بعرض الشاشة + نسوي توزيع يمين/يسار واضح */
 .topbarInner{
   width:100%;
-  max-width:none;        /* كان 1180px */
+  max-width:none;
   margin:0;
   height: var(--topbarH);
-  padding: 0 18px;       /* تباعد من الأطراف */
+  padding: 0 26px;              /* ✅ رجّعنا أطراف أوسع عشان الشعار يروح يمين والأزرار يسار */
   display:flex;
   align-items:center;
   justify-content:space-between;
   gap:14px;
 }
 
-/* ✅ ترتيب العناصر بدون لمس App.jsx */
-.topbarActions{ order:1; }
-.nav{ order:2; }
-.brand{ order:3; }
-
-/* ✅ الأزرار أقصى اليسار */
+/* ✅ نسحب مجموعة الأزرار أقصى اليسار */
 .topbarActions{
   display:flex;
   align-items:center;
-  gap:14px;
+  gap:16px;                     /* ✅ باعدنا بين زر الثيم والثلاث خطوط */
+  margin-left:-6px;             /* ✅ دفعة صغيرة لليسار (بدون تخبيص) */
 }
 
-/* ✅ الشعار أقصى اليمين */
+/* ✅ نسحب الشعار أقصى اليمين */
 .brand{
   display:flex;
   align-items:center;
   text-decoration:none;
+  margin-right:-6px;            /* ✅ دفعة صغيرة لليمين */
 }
 
-/* ✅ تكبير فعلي للشعار (height ثابت) */
+/* ✅ تكبير فعلي للشعار */
 .brandLogo{
-  height:50px;           /* كان max-height:42px */
+  height:58px;                  /* ✅ كبرناه عشان يبان */
   width:auto;
   display:block;
   filter: drop-shadow(0 10px 18px rgba(0,0,0,.55));
