@@ -76,38 +76,41 @@ body{
   max-width:1180px;
   margin:0 auto;
   height: var(--topbarH);
-  padding: 0 16px;
+
+  /* ✅ توازن: الشعار أقصى اليمين + الأزرار أقصى اليسار */
+  padding: 0 12px;
   display:flex;
   align-items:center;
-  justify-content:space-between;
-
-  /* ✅ باعدنا بين جهة الأزرار وجهة الشعار */
+  justify-content:flex-start;
   gap:16px;
 }
 
+/* ✅ الأزرار على أقصى اليسار */
+.topbarActions{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  margin-right:auto; /* RTL: يدفع الكتلة لأقصى اليسار */
+}
+
+/* ✅ الشعار على أقصى اليمين */
 .brand{
   display:flex;
   align-items:center;
   text-decoration:none;
+  margin-left:auto; /* RTL: يدفع الشعار لأقصى اليمين */
 }
 
-/* ✅ الشعار يمين وبحجم مناسب */
+/* ✅ تكبير الشعار شوي + يتحرك يمين أكثر */
 .brandLogo{
   height:auto;
-  max-height:42px;
+  max-height:46px;  /* كان 42px */
   width:auto;
   display:block;
   filter: drop-shadow(0 10px 18px rgba(0,0,0,.55));
 }
 :root[data-theme="light"] .brandLogo{
   filter: drop-shadow(0 10px 18px rgba(0,0,0,.18));
-}
-
-/* ✅ الأزرار يسار وبمسافة مثل أول */
-.topbarActions{
-  display:flex;
-  align-items:center;
-  gap:14px;
 }
 
 /* Theme button */
@@ -183,6 +186,7 @@ body{
   display:flex;
   gap:10px;
   align-items:center;
+  margin-left:12px; /* يبعد القائمة عن الشعار شوي */
 }
 .nav a{
   text-decoration:none;
@@ -535,7 +539,7 @@ h1 span{
   .cards3{ grid-template-columns:1fr; }
   .contactBox{ grid-template-columns:1fr; }
 
-  .brandLogo{ max-height:42px; }
+  .brandLogo{ max-height:46px; }
 
   .mediaFrame{ height: 260px; }
   .mediaFrame.tall{ height: 300px; }
