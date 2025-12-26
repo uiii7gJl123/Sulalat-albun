@@ -99,9 +99,9 @@ body{
   margin-right:-6px;
 }
 
-/* ✅ تكبير الشعار أكثر */
+/* ✅ تكبير أكثر */
 .brandLogo{
-  height:64px;          /* كان 58px */
+  height:72px;          /* كان 64px */
   width:auto;
   display:block;
   filter: drop-shadow(0 10px 18px rgba(0,0,0,.55));
@@ -535,8 +535,7 @@ h1 span{
   .cards3{ grid-template-columns:1fr; }
   .contactBox{ grid-template-columns:1fr; }
 
-  /* ✅ كبرناه هنا كمان */
-  .brandLogo{ height:56px; }
+  .brandLogo{ height:62px; } /* كان 56px */
 
   .mediaFrame{ height: 260px; }
   .mediaFrame.tall{ height: 300px; }
