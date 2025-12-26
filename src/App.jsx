@@ -1,10 +1,12 @@
 import React, { useEffect, useMemo, useState } from "react";
 
-const IMG = (n) => `/assets/images/farm-${n}.jpeg`;
+const BASE = import.meta.env.BASE_URL || "/";
+
+const IMG = (n) => `${BASE}assets/images/farm-${n}.jpeg`;
 
 // شعارات مختلفة حسب الثيم
-const LOGO_DARK = `/assets/images/logo-dark.png`;
-const LOGO_LIGHT = `/assets/images/logo-light.png`;
+const LOGO_DARK = `${BASE}assets/images/logo-dark.png`;
+const LOGO_LIGHT = `${BASE}assets/images/logo-light.png`;
 
 function useReveal() {
   useEffect(() => {
@@ -102,7 +104,7 @@ export default function App() {
                 <span>توريد بن أخضر بجودة ثابتة وخيارات متنوعة تلائم مختلف الأذواق.</span>
               </h1>
 
-              {/* ✅ حذف زر تواصل معنا هنا */}
+              {/* حذف زر تواصل معنا هنا */}
               <div className="ctaRow">
                 <a className="btn ghost" href="#services">
                   استعرض الخدمات
