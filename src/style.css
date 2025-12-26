@@ -540,3 +540,16 @@ h1 span{
   .mediaFrame{ height: 260px; }
   .mediaFrame.tall{ height: 300px; }
 }
+/* ===== FORCE LOGO SIZE (final override) ===== */
+.topbar .brandLogo{
+  height: 80px !important;     /* كبره هنا */
+  width: auto !important;
+  max-height: none !important;
+  max-width: none !important;
+}
+
+@media (max-width: 920px){
+  .topbar .brandLogo{
+    height: 64px !important;
+  }
+}
