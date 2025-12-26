@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 
-const IMG = (n) => `/assets/images/farm-${n}.jpg`;
+const IMG = (n) => `/assets/images/farm-${n}.jpeg`;
 
 // شعارات مختلفة حسب الثيم
 const LOGO_DARK = `/assets/images/logo-dark.png`;
