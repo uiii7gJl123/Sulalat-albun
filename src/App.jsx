@@ -38,7 +38,7 @@ export default function App() {
   // ✅ تحكم قطعي بحجم الشعار (يغلب CSS) — واضح وكبير بدون تضخيم البار
   const logoStyle = useMemo(
     () => ({
-      height: "84px",
+      height: "100px",
       width: "auto",
       maxHeight: "none",
       maxWidth: "none",
