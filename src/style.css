@@ -9,6 +9,7 @@
   --gold:#caa66a;
   --shadow: 0 18px 45px rgba(0,0,0,.35);
 
+  /* ✅ رجعنا البار طبيعي (كان ضخم) */
   --topbarH: 78px;
 }
 
@@ -87,7 +88,7 @@ body{
 .topbarActions{
   display:flex;
   align-items:center;
-  gap:12px;
+  gap:14px;
 }
 
 /* يمين */
@@ -97,31 +98,35 @@ body{
   text-decoration:none;
 }
 
-/* الشعار (خليه واضح داخل ارتفاع البار) */
+/* ملاحظة: الحجم الفعلي للشعار محكوم من App.jsx (inline) */
 .brandLogo{
-  height: 64px;
-  width:auto;
   display:block;
-  object-fit:contain;
   filter: drop-shadow(0 10px 18px rgba(0,0,0,.55));
 }
 :root[data-theme="light"] .brandLogo{
   filter: drop-shadow(0 10px 18px rgba(0,0,0,.18));
 }
 
-/* زر اللغة */
+/* ✅ Language button */
 .langBtn{
-  height:44px;
-  padding: 0 14px;
-  border-radius:14px;
+  width:44px; height:44px;
   border:1px solid var(--line);
   background: rgba(255,255,255,.04);
-  color: rgba(244,244,244,.88);
-  font-weight:900;
+  border-radius:14px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
   cursor:pointer;
 }
 :root[data-theme="light"] .langBtn{
   background: rgba(255,255,255,.65);
+}
+.langText{
+  font-weight:900;
+  letter-spacing:.02em;
+  color: rgba(244,244,244,.86);
+}
+:root[data-theme="light"] .langText{
   color: rgba(20,20,20,.78);
 }
 
@@ -450,6 +455,7 @@ h1 span{
   gap:12px;
 }
 .cards3.compact{ margin-top:12px; }
+
 .card{
   background: rgba(255,255,255,.05);
   border:1px solid var(--line);
@@ -463,7 +469,7 @@ h1 span{
 .card h3{ margin:0 0 6px; font-size:1.1rem; }
 .card p{ margin:0; color: var(--muted); font-weight:700; }
 
-/* قائمة كرت التحميص */
+/* ✅ قائمة كرت التحميص */
 .cardList{
   margin:10px 0 0;
   padding:0 18px 0 0; /* RTL */
@@ -471,7 +477,9 @@ h1 span{
   display:grid;
   gap:6px;
 }
-html[dir="ltr"] .cardList{ padding:0 0 0 18px; }
+:root[data-lang="en"] .cardList{
+  padding:0 0 0 18px; /* LTR */
+}
 .cardList li{
   position:relative;
   font-weight:700;
@@ -484,7 +492,7 @@ html[dir="ltr"] .cardList{ padding:0 0 0 18px; }
   color: var(--accent);
   font-weight:900;
 }
-html[dir="ltr"] .cardList li::before{
+:root[data-lang="en"] .cardList li::before{
   right:auto;
   left:-14px;
 }
@@ -525,7 +533,7 @@ html[dir="ltr"] .cardList li::before{
   padding:20px;
   box-shadow: var(--shadow);
   display:grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: 1.1fr .9fr;
   gap:12px;
   align-items:start;
 }
@@ -533,61 +541,107 @@ html[dir="ltr"] .cardList li::before{
   background: linear-gradient(180deg, rgba(255,255,255,.86), rgba(255,255,255,.72));
 }
 
-.contactDesc{
-  margin: 8px 0 0;
-  color: var(--muted);
-  font-weight:700;
+/* ✅ Contact icon links (بنفس الستايل) */
+.contactLinksWrap{
+  margin-top: 10px;
+  border: 1px solid rgba(255,255,255,.08);
+  background: rgba(255,255,255,.04);
+  border-radius: 20px;
+  padding: 14px;
 }
-
+:root[data-theme="light"] .contactLinksWrap{
+  border: 1px solid rgba(10,10,10,.10);
+  background: rgba(255,255,255,.70);
+}
+.contactLinksHead{
+  font-weight:900;
+  color: rgba(244,244,244,.78);
+  margin-bottom: 10px;
+}
+:root[data-theme="light"] .contactLinksHead{
+  color: rgba(20,20,20,.70);
+}
 .contactLinks{
-  margin-top: 14px;
   display:grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap:12px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap:10px;
 }
-
 .iconBtn{
   display:flex;
   align-items:center;
-  gap:12px;
-  padding:14px 14px;
-  border-radius:18px;
-  border:1px solid var(--line);
-  background: rgba(255,255,255,.05);
-  box-shadow: var(--shadow);
+  gap:10px;
   text-decoration:none;
-  color: rgba(244,244,244,.88);
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,.05);
+  border-radius: 16px;
+  padding: 12px 12px;
+  box-shadow: var(--shadow);
 }
 :root[data-theme="light"] .iconBtn{
   background: rgba(255,255,255,.78);
-  color: rgba(20,20,20,.82);
 }
-
-.iconBtn:hover{ filter:brightness(1.03); }
-
-.iconBtn .icon{
-  width:40px; height:40px;
-  border-radius:14px;
+.iconCircle{
+  width:38px; height:38px;
+  border-radius: 14px;
   display:flex;
   align-items:center;
   justify-content:center;
-  background: rgba(149,173,114,.12);
-  border:1px solid rgba(149,173,114,.22);
-  color: rgba(244,244,244,.92);
+  background: rgba(149,173,114,.14);
+  border: 1px solid rgba(149,173,114,.22);
+  color: rgba(244,244,244,.90);
 }
-:root[data-theme="light"] .iconBtn .icon{
+:root[data-theme="light"] .iconCircle{
   color: rgba(20,20,20,.78);
 }
-
-.iconBtn .label{
-  display:flex;
-  flex-direction:column;
-  gap:2px;
+.iconText{
   font-weight:900;
+  color: rgba(244,244,244,.88);
 }
-.iconBtn .label small{
-  font-weight:700;
-  opacity:.75;
+:root[data-theme="light"] .iconText{
+  color: rgba(20,20,20,.80);
+}
+.iconBtn:hover{
+  filter: brightness(1.03);
+}
+
+/* ✅ Meta info */
+.contactMeta{
+  margin-top: 12px;
+  display:grid;
+  gap:10px;
+}
+.metaRow{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  padding: 12px 14px;
+  border-radius: 18px;
+  border:1px solid rgba(255,255,255,.08);
+  background: rgba(255,255,255,.04);
+}
+:root[data-theme="light"] .metaRow{
+  border:1px solid rgba(10,10,10,.10);
+  background: rgba(255,255,255,.70);
+}
+.metaLabel{
+  font-weight:900;
+  color: rgba(244,244,244,.70);
+}
+:root[data-theme="light"] .metaLabel{
+  color: rgba(20,20,20,.62);
+}
+.metaValue{
+  text-decoration:none;
+  font-weight:900;
+  color: rgba(244,244,244,.90);
+  word-break: break-word;
+}
+:root[data-theme="light"] .metaValue{
+  color: rgba(20,20,20,.82);
+}
+.metaValue:hover{
+  text-decoration: underline;
 }
 
 /* Footer */
@@ -634,7 +688,4 @@ html[dir="ltr"] .cardList li::before{
 
   .mediaFrame{ height: 260px; }
   .mediaFrame.tall{ height: 300px; }
-
-  /* الشعار بالموبايل */
-  .brandLogo{ height: 58px; }
 }
