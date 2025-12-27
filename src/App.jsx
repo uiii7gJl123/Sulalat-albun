@@ -151,7 +151,6 @@ export default function App() {
         ],
         qualityCap: "معايير ثابتة • تشغيل أسهل • نتائج أوضح",
         contactTitle: "تواصل معنا",
-        contactCta: { wa: "واتساب", email: "بريد إلكتروني" },
         contactLinksTitle: "روابط التواصل",
         contactItems: {
           wa: "واتساب",
@@ -198,7 +197,6 @@ export default function App() {
         ],
         qualityCap: "Clear standards • Easier ops • Better results",
         contactTitle: "Contact",
-        contactCta: { wa: "WhatsApp", email: "Email" },
         contactLinksTitle: "Contact links",
         contactItems: {
           wa: "WhatsApp",
@@ -398,7 +396,7 @@ export default function App() {
               <div>
                 <h2>{t.contactTitle}</h2>
 
-                {/* ✅ روابط التواصل بأيقونات */}
+                {/* ✅ روابط التواصل بأيقونات فقط */}
                 <div className="contactLinksWrap">
                   <div className="contactLinksHead">{t.contactLinksTitle}</div>
 
@@ -431,31 +429,6 @@ export default function App() {
                       <span className="iconText">{t.contactItems.biz}</span>
                     </a>
                   </div>
-                </div>
-
-                {/* ✅ إظهار البيانات نصياً بنفس الستايل */}
-                <div className="contactMeta">
-                  <div className="metaRow">
-                    <div className="metaLabel">{lang === "ar" ? "الرقم" : "Phone"}</div>
-                    <a className="metaValue" href={`tel:+${PHONE_E164}`}>
-                      {PHONE_LOCAL}
-                    </a>
-                  </div>
-                  <div className="metaRow">
-                    <div className="metaLabel">{lang === "ar" ? "البريد" : "Email"}</div>
-                    <a className="metaValue" href={`mailto:${EMAIL}`}>
-                      {EMAIL}
-                    </a>
-                  </div>
-                </div>
-
-                <div className="ctaRow" style={{ marginTop: 16 }}>
-                  <a className="btn" href={`https://wa.me/${PHONE_E164}`} target="_blank" rel="noreferrer">
-                    {t.contactCta.wa}
-                  </a>
-                  <a className="btn ghost" href={`mailto:${EMAIL}`}>
-                    {t.contactCta.email}
-                  </a>
                 </div>
               </div>
             </div>
