@@ -43,10 +43,7 @@ const IconMail = (p) => (
 
 const IconBiz = (p) => (
   <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" {...p}>
-    <path
-      fill="currentColor"
-      d="M7 4h10a2 2 0 0 1 2 2v14H5V6a2 2 0 0 1 2-2Zm0 2v12h10V6H7Zm2 2h6v2H9V8Zm0 4h6v2H9v-2Z"
-    />
+    <path fill="currentColor" d="M7 4h10a2 2 0 0 1 2 2v14H5V6a2 2 0 0 1 2-2Zm0 2v12h10V6H7Zm2 2h6v2H9V8Zm0 4h6v2H9v-2Z" />
   </svg>
 );
 
@@ -55,9 +52,7 @@ function useReveal() {
     const els = Array.from(document.querySelectorAll("[data-reveal]"));
     const io = new IntersectionObserver(
       (entries) => {
-        for (const e of entries) {
-          if (e.isIntersecting) e.target.classList.add("is-in");
-        }
+        for (const e of entries) if (e.isIntersecting) e.target.classList.add("is-in");
       },
       { threshold: 0.12 }
     );
@@ -87,7 +82,7 @@ export default function App() {
 
   const logoSrc = useMemo(() => (theme === "light" ? LOGO_LIGHT : LOGO_DARK), [theme]);
 
-  // ✅ تحكم قطعي بحجم الشعار (يغلب CSS) — واضح وكبير بدون تضخيم البار
+  // تحكم قطعي بحجم الشعار
   const logoStyle = useMemo(
     () => ({
       height: "180px",
@@ -100,7 +95,6 @@ export default function App() {
     []
   );
 
-  // صور موزعة على الأقسام
   const storyImages = useMemo(
     () => ({
       hero: [1, 2, 3, 4],
@@ -213,14 +207,11 @@ export default function App() {
     <div className="app">
       <header className="topbar">
         <div className="topbarInner">
-          {/* يمين: الشعار */}
           <a className="brand" href="#home" onClick={() => setMenuOpen(false)}>
             <img className="brandLogo" src={logoSrc} alt="Sullalat Al-Bun Logo" style={logoStyle} />
           </a>
 
-          {/* يسار: الأزرار */}
           <div className="topbarActions">
-            {/* ✅ زر عربي/إنجليزي */}
             <button
               className="langBtn"
               aria-label="Language"
@@ -230,11 +221,7 @@ export default function App() {
               <span className="langText">{lang === "ar" ? "EN" : "AR"}</span>
             </button>
 
-            <button
-              className="themeBtn"
-              aria-label="تبديل الثيم"
-              onClick={() => setTheme((tt) => (tt === "dark" ? "light" : "dark"))}
-            >
+            <button className="themeBtn" aria-label="تبديل الثيم" onClick={() => setTheme((tt) => (tt === "dark" ? "light" : "dark"))}>
               <span className="themeIcon" />
             </button>
 
@@ -245,20 +232,11 @@ export default function App() {
             </button>
           </div>
 
-          {/* قائمة (تظهر ديسكتوب + تنفتح بالموبايل) */}
           <nav className={`nav ${menuOpen ? "open" : ""}`}>
-            <a href="#about" onClick={() => setMenuOpen(false)}>
-              {t.nav.about}
-            </a>
-            <a href="#services" onClick={() => setMenuOpen(false)}>
-              {t.nav.services}
-            </a>
-            <a href="#quality" onClick={() => setMenuOpen(false)}>
-              {t.nav.quality}
-            </a>
-            <a href="#contact" onClick={() => setMenuOpen(false)}>
-              {t.nav.contact}
-            </a>
+            <a href="#about" onClick={() => setMenuOpen(false)}>{t.nav.about}</a>
+            <a href="#services" onClick={() => setMenuOpen(false)}>{t.nav.services}</a>
+            <a href="#quality" onClick={() => setMenuOpen(false)}>{t.nav.quality}</a>
+            <a href="#contact" onClick={() => setMenuOpen(false)}>{t.nav.contact}</a>
           </nav>
         </div>
       </header>
@@ -275,16 +253,12 @@ export default function App() {
               </h1>
 
               <div className="ctaRow">
-                <a className="btn ghost" href="#services">
-                  {t.ctaServices}
-                </a>
+                <a className="btn ghost" href="#services">{t.ctaServices}</a>
               </div>
 
               <div className="miniNotes">
                 {t.pills.map((x) => (
-                  <div key={x} className="pill">
-                    {x}
-                  </div>
+                  <div key={x} className="pill">{x}</div>
                 ))}
               </div>
             </div>
@@ -343,9 +317,7 @@ export default function App() {
                     <p>{c.p}</p>
                     {c.list ? (
                       <ul className="cardList">
-                        {c.list.map((li) => (
-                          <li key={li}>{li}</li>
-                        ))}
+                        {c.list.map((li) => <li key={li}>{li}</li>)}
                       </ul>
                     ) : null}
                   </div>
@@ -389,13 +361,11 @@ export default function App() {
           </div>
         </section>
 
-        {/* ✅ STRIP بعد الجودة مباشرة (تحت معايير ثابتة...) */}
+        {/* ✅ هنا المكان الصحيح: تحت (معايير ثابتة...) مباشرة */}
         <section className="afterQualityStrip">
-          <div className="wrap" data-reveal>
+          <div className="wrap afterQualityInner" data-reveal>
             <a className="iconBtn afterQualityBtn" href={SAUDI_BIZ_URL} target="_blank" rel="noreferrer">
-              <span className="iconCircle">
-                <IconBiz />
-              </span>
+              <span className="iconCircle"><IconBiz /></span>
               <span className="iconText">{t.contactItems.biz}</span>
             </a>
           </div>
@@ -408,29 +378,22 @@ export default function App() {
               <div>
                 <h2>{t.contactTitle}</h2>
 
-                {/* ✅ روابط التواصل بأيقونات فقط */}
                 <div className="contactLinksWrap">
                   <div className="contactLinksHead">{t.contactLinksTitle}</div>
 
                   <div className="contactLinks">
                     <a className="iconBtn" href={`https://wa.me/${PHONE_E164}`} target="_blank" rel="noreferrer">
-                      <span className="iconCircle">
-                        <IconWhatsApp />
-                      </span>
+                      <span className="iconCircle"><IconWhatsApp /></span>
                       <span className="iconText">{t.contactItems.wa}</span>
                     </a>
 
                     <a className="iconBtn" href={INSTAGRAM_URL} target="_blank" rel="noreferrer">
-                      <span className="iconCircle">
-                        <IconInstagram />
-                      </span>
+                      <span className="iconCircle"><IconInstagram /></span>
                       <span className="iconText">{t.contactItems.ig}</span>
                     </a>
 
                     <a className="iconBtn" href={`mailto:${EMAIL}`}>
-                      <span className="iconCircle">
-                        <IconMail />
-                      </span>
+                      <span className="iconCircle"><IconMail /></span>
                       <span className="iconText">{t.contactItems.email}</span>
                     </a>
                   </div>
@@ -439,9 +402,7 @@ export default function App() {
             </div>
 
             <footer className="footer">
-              <div>
-                © {new Date().getFullYear()} {lang === "ar" ? "سلالة البن الفاخر" : "Sullalat Al-Bun"}
-              </div>
+              <div>© {new Date().getFullYear()} {lang === "ar" ? "سلالة البن الفاخر" : "Sullalat Al-Bun"}</div>
             </footer>
           </div>
         </section>
