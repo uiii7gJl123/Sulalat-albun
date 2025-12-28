@@ -670,3 +670,23 @@ h1 span{
   .mediaFrame{ height: 260px; }
   .mediaFrame.tall{ height: 300px; }
 }
+} /* <-- هذا حق @media */
+
+/* ✅ بعد قسم الجودة مباشرة (مساحة أغمق شوي + زر المركز) */
+.afterQualityStrip{
+  padding: 18px 0 34px; /* تكبير بسيط */
+  background: rgba(255,255,255,.03);
+  border-top: 1px solid rgba(255,255,255,.06);
+  border-bottom: 1px solid rgba(255,255,255,.06);
+}
+:root[data-theme="light"] .afterQualityStrip{
+  background: rgba(10,10,10,.04); /* أغمق من الأبيض بدرجة بسيطة */
+  border-top: 1px solid rgba(10,10,10,.08);
+  border-bottom: 1px solid rgba(10,10,10,.08);
+}
+
+.afterQualityBtn{
+  max-width: 520px;
+  width: 100%;
+  margin: 0 auto;
+}
