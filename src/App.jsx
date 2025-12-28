@@ -87,7 +87,6 @@ export default function App() {
 
   const logoSrc = useMemo(() => (theme === "light" ? LOGO_LIGHT : LOGO_DARK), [theme]);
 
-  // ✅ تحكم قطعي بحجم الشعار (يغلب CSS) — واضح وكبير بدون تضخيم البار
   const logoStyle = useMemo(
     () => ({
       height: "180px",
@@ -100,7 +99,6 @@ export default function App() {
     []
   );
 
-  // صور موزعة على الأقسام
   const storyImages = useMemo(
     () => ({
       hero: [1, 2, 3, 4],
@@ -298,6 +296,18 @@ export default function App() {
           </div>
         </section>
 
+        {/* ✅ STRIP تحت الهيرو (المساحة الأغمق + زر المركز السعودي للأعمال) */}
+        <section className="underHeroStrip">
+          <div className="wrap underHeroInner" data-reveal>
+            <a className="iconBtn underHeroBtn" href={SAUDI_BIZ_URL} target="_blank" rel="noreferrer">
+              <span className="iconCircle">
+                <IconBiz />
+              </span>
+              <span className="iconText">{t.contactItems.biz}</span>
+            </a>
+          </div>
+        </section>
+
         {/* ABOUT */}
         <section id="about" className="section">
           <div className="wrap split">
@@ -422,12 +432,7 @@ export default function App() {
                       <span className="iconText">{t.contactItems.email}</span>
                     </a>
 
-                    <a className="iconBtn" href={SAUDI_BIZ_URL} target="_blank" rel="noreferrer">
-                      <span className="iconCircle">
-                        <IconBiz />
-                      </span>
-                      <span className="iconText">{t.contactItems.biz}</span>
-                    </a>
+                    {/* ✅ تم نقل زر المركز السعودي للأعمال للأعلى تحت الهيرو */}
                   </div>
                 </div>
               </div>
