@@ -356,6 +356,27 @@ h1 span{
 .t3{ transform: rotate(2deg); }
 .t4{ transform: rotate(-2deg); }
 
+/* ✅ STRIP تحت الهيرو (تكبير المساحة + لون أغمق بسيط) */
+.underHeroStrip{
+  padding: 18px 0 30px; /* كبرناها شوي */
+  background: rgba(255,255,255,.03);
+  border-top: 1px solid rgba(255,255,255,.06);
+  border-bottom: 1px solid rgba(255,255,255,.06);
+}
+:root[data-theme="light"] .underHeroStrip{
+  background: rgba(10,10,10,.04); /* أغمق من الأبيض بدرجة بسيطة */
+  border-top: 1px solid rgba(10,10,10,.08);
+  border-bottom: 1px solid rgba(10,10,10,.08);
+}
+.underHeroInner{
+  display:flex;
+  justify-content:center;
+}
+.underHeroBtn{
+  max-width: 520px;
+  width:100%;
+}
+
 /* ====== Sections ====== */
 .section{ padding: 46px 0; }
 .section.soft{
@@ -602,46 +623,6 @@ h1 span{
 }
 .iconBtn:hover{
   filter: brightness(1.03);
-}
-
-/* ✅ Meta info */
-.contactMeta{
-  margin-top: 12px;
-  display:grid;
-  gap:10px;
-}
-.metaRow{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-  padding: 12px 14px;
-  border-radius: 18px;
-  border:1px solid rgba(255,255,255,.08);
-  background: rgba(255,255,255,.04);
-}
-:root[data-theme="light"] .metaRow{
-  border:1px solid rgba(10,10,10,.10);
-  background: rgba(255,255,255,.70);
-}
-.metaLabel{
-  font-weight:900;
-  color: rgba(244,244,244,.70);
-}
-:root[data-theme="light"] .metaLabel{
-  color: rgba(20,20,20,.62);
-}
-.metaValue{
-  text-decoration:none;
-  font-weight:900;
-  color: rgba(244,244,244,.90);
-  word-break: break-word;
-}
-:root[data-theme="light"] .metaValue{
-  color: rgba(20,20,20,.82);
-}
-.metaValue:hover{
-  text-decoration: underline;
 }
 
 /* Footer */
